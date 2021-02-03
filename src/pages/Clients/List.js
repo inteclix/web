@@ -24,6 +24,7 @@ export default function () {
       title: "Code (SAP)",
       dataIndex: "code",
       copyable: true,
+      hideInSearch: true,
       sorter: true
     },
     {
@@ -46,7 +47,7 @@ export default function () {
     },
     {
       title: "Client Hierachique",
-      dataIndex: ["client", "designation"],
+      dataIndex: ["client_h_designation"],
       sorter: true,
       hideInSearch: true
     },
@@ -56,15 +57,25 @@ export default function () {
       dataIndex: "id",
       render: (text, row, index, action) => [
         <>
-          { hasRole(user, "SUPPRIMER_CLIENT") &&
-            <Tooltip title="Supprimer">
-              <Button
-                onClick={() => {
-                  api.post("/clients/delete/" + row.id).then(() => { message.info("Bien Supprimé"); action.reload(); })
-                }}
-                shape="circle" icon={<DeleteOutlined />} />
-            </Tooltip>}
+          {
+            hasRole(user, "SUPPRIMER_CLIENT") &&
+            <Popconfirm
+              title="Êtes-vous sûr de vouloir supprimer?"
+              onConfirm={() => {
+                api.post("/clients/delete/" + row.id).then(() => { message.info("Bien Supprimé"); action.reload(); })
+              }}
+              onCancel={() => { }}
+              okText="Oui"
+              cancelText="No"
+            >
+              <Tooltip title="Supprimer">
+                <Button
+                  shape="circle" icon={<DeleteOutlined />} />
+              </Tooltip>
+            </Popconfirm>
+          }
         </>,
+
         <>
           {hasRole(user, "MODIFIER_CLIENT") &&
             <Tooltip title="Modifier">
@@ -90,13 +101,16 @@ export default function () {
         search={true}
         columns={columns}
         ellipsis={true}
-        request={(params, sort, filter) => {
-          console.log(sort)
+        request={(params, sort, filters) => {
           if (sort) {
             params["sortBy"] = Object.keys(sort)[0]
             params["sort"] = Object.values(sort)[0]
           }
-          return api.get("/clients", { params, sort }).then((res) => res.data)
+          if (filters) {
+            params["filterBy"] = Object.keys(filters)[0]
+            params["filter"] = Object.values(filters)
+          }
+          return api.get("/clients", { params }).then((res) => res.data.data)
         }}
         pagination={{
           defaultCurrent: 1,

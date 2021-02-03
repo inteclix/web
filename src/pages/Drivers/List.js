@@ -40,6 +40,7 @@ export default function () {
     {
       title: "Code paie",
       dataIndex: "code_paie",
+      hideInSearch: true,
       sorter: true,
     },
     {
@@ -52,7 +53,8 @@ export default function () {
       title: "Date Creéation",
       dataIndex: "created_at",
       valueType: "dateTime",
-      hideInSearch: true
+      hideInSearch: true,
+      sorter: true,
     },
     {
       title: "option",
@@ -104,13 +106,16 @@ export default function () {
         search={true}
         columns={columns}
         ellipsis={true}
-        request={(params, sort, filter) => {
-          console.log(sort)
+        request={(params, sort, filters) => {
           if (sort) {
             params["sortBy"] = Object.keys(sort)[0]
             params["sort"] = Object.values(sort)[0]
           }
-          return api.get("/drivers", { params, sort }).then((res) => res.data)
+          if (filters) {
+            params["filterBy"] = Object.keys(filters)[0]
+            params["filter"] = Object.values(filters)
+          }
+          return api.get("/drivers", { params }).then((res) => res.data.data)
         }}
 
         pagination={{

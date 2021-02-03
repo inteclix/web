@@ -51,7 +51,7 @@ export default () => {
                   </SubMenu> : null
                 )
               } else {
-                return hasRole(user, r.role) ? <Menu.Item key={"m-" + i} onClick={() => history.push(r.path)} key={r.name} icon={r.icon}>{r.label}</Menu.Item> : null
+                return hasRole(user, r.role) ? (r.hideInSide ? undefined : <Menu.Item key={"m-" + i} onClick={() => history.push(r.path)} key={r.name} icon={r.icon}>{r.label}</Menu.Item>) : null
               }
             } else {
               if (r.routes) {

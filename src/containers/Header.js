@@ -34,8 +34,8 @@ export default () => {
   }
   useEffect(() => {
     getNotifications()
-    const intr = setInterval(getNotifications, 20000)
-    return clearInterval(intr)
+    const intr = setInterval(getNotifications, 30000)
+    return () => clearInterval(intr)
   }, [])
 
   const NotificatiobContent = () => {

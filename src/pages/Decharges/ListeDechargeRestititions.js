@@ -77,7 +77,7 @@ export default function () {
           <Button
             onClick={() => {
               console.log(row)
-              history.push("/decharges/show/" + row["decharges.id"])
+              history.push("/decharges/show/" + row["id"])
             }}
             shape="circle" icon={<EyeOutlined />} />
         </Tooltip>,

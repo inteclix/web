@@ -22,7 +22,8 @@ export const FormBuilder = ({
   initialValues = [],
   onFinish,
   onFinishFailed,
-  extra = () => { }
+  extra = () => { },
+  loading
 }) => {
   const [form] = Form.useForm();
   window.form = form;
@@ -182,7 +183,7 @@ export const FormBuilder = ({
       })}
 
       <Item {...formTailLayout}>
-        <Button type="primary" htmlType="submit">
+        <Button loading={loading} type="primary" htmlType="submit">
           Envoyer
         </Button>
       </Item>

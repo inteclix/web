@@ -4,7 +4,6 @@ export const formItems = [
   {
     name: "code",
     label: "Code (SAP)",
-    rules: [{ required: true, message: _messages.required }],
     type: "text",
   },
   {

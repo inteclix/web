@@ -52,36 +52,39 @@ export default function () {
         <p><b>Code GPS:</b> {allData.decharge && allData.decharge["cars.code_gps"]}</p>
       </Card>
       <Divider orientation="left"><h1>Chcklist de restitition:</h1></Divider>
-      <FormBuilder
-        formItems={formCheckListRestititionItems} onFinish={restitition}
-        initialValues={
-          {
-            driver: allData.driver,
-            driver_id: allData.driver && allData.driver.id,
-            odometre: allData?.decharge && allData.decharge.odometre,
-            date_restitition: moment(),
-            assurance: false,
-            boite_pharm: false,
-            carnet_enter: false,
-            carte_gpl: false,
-            carte_grise: false,
-            cle_roue: false,
-            cle_vehicule: 1,
-            cric: false,
-            extincteur: false,
-            gillet: false,
-            niveau_carburant: allData?.decharge && allData.decharge.niveau_carburant,
-            permis_circuler: false,
-            pochette_cle: false,
-            poste_radio: false,
-            roue_secour: false,
-            scanner: false,
-            starts: 5,
-            triangle: false,
-            vignette: false
+      {allData.decharge &&
+
+        <FormBuilder
+          formItems={formCheckListRestititionItems} onFinish={restitition}
+          initialValues={
+            {
+              driver: allData.driver,
+              driver_id: allData.driver && allData.driver.id,
+              odometre: allData?.decharge && allData.decharge.odometre,
+              date_restitition: moment(),
+              assurance: allData.decharge.assurance,
+              boite_pharm: allData.decharge.boite_pharm,
+              carnet_enter: allData.decharge.carnet_enter,
+              carte_gpl: allData.decharge.carte_gpl,
+              carte_grise: allData.decharge.carte_grise,
+              cle_roue: allData.decharge.cle_roue,
+              cle_vehicule: allData.decharge.cle_vehicule,
+              cric: allData.decharge.cric,
+              extincteur: allData.decharge.extincteur,
+              gillet: allData.decharge.gillet,
+              niveau_carburant: allData.decharge.niveau_carburant,
+              permis_circuler: allData.decharge.permis_circuler,
+              pochette_cle: allData.decharge.pochette_cle,
+              poste_radio: allData.decharge.poste_radio,
+              roue_secour: allData.decharge.roue_secour,
+              scanner: allData.decharge.scanner,
+              starts: allData.decharge.starts,
+              triangle: allData.decharge.triangle,
+              vignette: allData.decharge.vignette
+            }
           }
-        }
-      />
+        />
+      }
     </Page >
   )
 }

@@ -13,10 +13,18 @@ import {
 } from 'bizcharts';
 
 import {
+  FaCarAlt,
+  FaCarSide,
+  FaCarCrash
+} from "react-icons/fa";
+import {
   Spin,
   Divider,
-  Descriptions
+  Descriptions,
+  Row
 } from "antd"
+
+import Statistic from "components/Statistic"
 
 function ChartPiVL() {
   const { api } = useAppStore()
@@ -39,12 +47,14 @@ function ChartPiVL() {
 
   useEffect(() => {
     getDashboardVL()
-    const intr = setInterval(getDashboardVL, 20000)
-    return clearInterval(intr)
+    const intr = setInterval(getDashboardVL, 30000)
+    return () => clearInterval(intr)
   }, [])
 
   if (loading || !dashboardVL) {
-    return <Spin />
+    return <div style={{display: "flex", justifyContent: "center", alignItems:"center"}}>
+      <Spin size="large" />
+    </div>
   }
   //const operationel_vl = dashboardVL
   const non_exploite_vlP = dashboardVL.non_exploite_vl
@@ -63,44 +73,95 @@ function ChartPiVL() {
     { item: 'AFFECTE', count: affecte_vl, percent: affecte_vlP },
     { item: 'NON EXPLOITE', count: non_exploite_vl, percent: non_exploite_vlP },
     { item: 'EN PANNE', count: en_panne_vl, percent: en_panne_vlP },
-    { item: 'ACCEDENTE', count: accedente_vl, percent: accedente_vlP },
+    { item: 'ACCEDENTE', count: accedente_vl, percent: accedente_vlP, color: "red" },
   ];
 
 
   return (
     <>
-      <Descriptions title="Informations">
-        <Descriptions.Item label="Capacité">{capacity_logistics_vl}</Descriptions.Item>
-        <Descriptions.Item label="Opérationel">{operationel_vl}</Descriptions.Item>
-        <Descriptions.Item label="Affecté">{affecte_vlP}</Descriptions.Item>
-        <Descriptions.Item label="Non exploité">{non_exploite_vlP}</Descriptions.Item>
-        <Descriptions.Item label="En panne">{en_panne_vlP}</Descriptions.Item>
-        <Descriptions.Item label="Accedenté">{accedente_vlP}</Descriptions.Item>
-      </Descriptions>
-      <Chart height={400} data={data} autoFit>
-        <Coordinate type="theta" radius={0.75} />
-        <Tooltip showTitle={true} />
-        <Axis visible={false} />
-        <Interval
-          position="percent"
-          adjust="stack"
-          color="item"
-          style={{
-            lineWidth: 1,
-            stroke: '#fff',
-          }}
-
-          state={{
-            selected: {
-              style: (t) => {
-                const res = getTheme().geometries.interval.rect.selected.style(t);
-                return { ...res, fill: 'red' }
-              }
-            }
-          }}
+      {
+        /**
+            <Chart height={400} data={data} autoFit>
+              <Coordinate type="theta" radius={0.75} />
+              <Tooltip showTitle={true} />
+              <Axis visible={false} />
+              <Interval
+                position="percent"
+                adjust="stack"
+                color="item"
+                style={{
+                  lineWidth: 1,
+                  stroke: '#fff',
+                }}
+      
+                state={{
+                  selected: {
+                    style: (t) => {
+                      const res = getTheme().geometries.interval.rect.selected.style(t);
+                      return { ...res, fill: 'red' }
+                    }
+                  }
+                }}
+              />
+              <Interaction type='element-single-selected' />
+            </Chart>
+      
+         * 
+         *       <Descriptions title="Informations">
+              <Descriptions.Item label="Capacité">{capacity_logistics_vl}</Descriptions.Item>
+              <Descriptions.Item label="Opérationel">{operationel_vl}</Descriptions.Item>
+              <Descriptions.Item label="Affecté">{affecte_vlP}</Descriptions.Item>
+              <Descriptions.Item label="Non exploité">{non_exploite_vlP}</Descriptions.Item>
+              <Descriptions.Item label="En panne">{en_panne_vlP}</Descriptions.Item>
+              <Descriptions.Item label="Accedenté">{accedente_vlP}</Descriptions.Item>
+            </Descriptions>
+         */
+      }
+      <Row >
+        <Statistic
+          value={capacity_logistics_vl}
+          icon={<FaCarAlt style={{ marginRight: 10 }} />}
+          suffix="Véhicules"
+          title="Capacité"
+          color="#000"
         />
-        <Interaction type='element-single-selected' />
-      </Chart>
+        <Statistic
+          value={operationel_vl}
+          icon={<FaCarAlt style={{ marginRight: 10 }} />}
+          suffix="Véhicules"
+          title="Opérationel"
+          color="green"
+        />
+        <Statistic
+          value={affecte_vlP}
+          icon={<FaCarSide style={{ marginRight: 10 }} />}
+          suffix="Véhicules"
+          title="Affecté"
+          color="blue"
+        />
+        <Statistic
+          value={non_exploite_vlP}
+          icon={<FaCarSide style={{ marginRight: 10 }} />}
+          suffix="Véhicules"
+          title="Non exploité"
+          color="#9c27b0"
+        />
+        <Statistic
+          value={en_panne_vlP}
+          icon={<FaCarSide style={{ marginRight: 10 }} />}
+          suffix="Véhicules"
+          title="En panne"
+          color="#faad14"
+        />
+        <Statistic
+          value={accedente_vlP}
+          icon={<FaCarCrash style={{ marginRight: 10 }} />}
+          suffix="Véhicules"
+          title="Accedenté"
+          color="red"
+        />
+      </Row>
+
 
     </>
   );
@@ -132,7 +193,6 @@ export default () => {
     <Page title="Dashboard">
       <Divider orientation="left"><h1>Véhicules<b> GROUPE LEGER</b></h1></Divider>
       <ChartPiVL />
-
     </Page>
   )
 }

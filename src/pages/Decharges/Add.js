@@ -17,6 +17,8 @@ export default function () {
   const { api } = useAppStore()
   const history = useHistory()
   const [allData, setAllData] = useState({ step: 0 })
+  const [loading, setLoading] = useState(false)
+
   const decharge = (dataForm) => {
     dataForm["date_decharge"] = dataForm["date_decharge"] ? dataForm["date_decharge"].format("yy-M-D") : moment().format("yy-M-D")
     dataForm["date_fin_prestation"] = dataForm["date_fin_prestation"] ? dataForm["date_fin_prestation"].format("yy-M-D") : null
@@ -29,10 +31,13 @@ export default function () {
       ...allData.data,
       ...dataForm
     }
+    setLoading(true);
 
     api.post("/decharges", postData).then((res) => {
       message.info("Bien ajouter")
       history.push("/decharges/show/" + res.data.data.id)
+    }).catch(() => {
+      setLoading(false);
     })
 
   }
@@ -57,6 +62,7 @@ export default function () {
           }
           {allData.step === 1 &&
             <FormBuilder
+              loading={loading}
               formItems={[{
                 name: "date_checklist",
                 label: "Date checklist",
@@ -167,7 +173,7 @@ export default function () {
                 label: "Poste radio",
                 type: "checkbox",
               },
-              
+
               {
                 name: "extincteur",
                 label: "Extincteur",

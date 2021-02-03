@@ -16,17 +16,12 @@ export const formItems = [
   {
     name: "tel",
     label: "tel",
-    rules: [{ required: true, message: _messages.required }],
     type: "text",
   },
   {
     name: "code_paie",
     label: "Code paie",
-    rules: [{ required: true, message: _messages.required }],
-    inputProp: {
-      placeholder: "'0' Si n'appartient pas au Condor Logistics",
-    },
-    type: "text",
+    type: "integer",
   },
   {
     name: "type",

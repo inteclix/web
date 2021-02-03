@@ -15,7 +15,7 @@ import Page from "components/Page";
 import { useAppStore } from "stores";
 import { useHistory } from "react-router-dom";
 import { _prop } from "_consts";
-
+import { hasRole } from "utils";
 
 export default function () {
   const { api, user } = useAppStore()
@@ -75,37 +75,51 @@ export default function () {
             }}
             shape="circle" icon={<EyeOutlined />} />
         </Tooltip>,
-        <Tooltip title="Change conducteur">
-          <Button
-            onClick={() => {
-              history.push("/decharges/checklist/" + row.id)
-            }}
-            shape="circle" icon={<FaUserEdit />} />
-        </Tooltip>,
-        <Tooltip title="Restitution">
-          <Button
-            disabled={row["restititions.id"]}
-            onClick={() => {
-              history.push("/decharges/restitition/" + row.id)
-            }}
-            shape="circle" icon={<ToTopOutlined />} />
-        </Tooltip>,
-        <Popconfirm
-          title="Êtes-vous sûr de vouloir supprimer?"
-          onConfirm={() => {
-            api.post("/decharges/delete/" + row.id).then(() => {
-              message.info("Bien Supprimé"); action.reload();
-            })
-          }}
-          onCancel={() => { }}
-          okText="Oui"
-          cancelText="No"
-        >
-          <Button
+        <>
+          {
+            hasRole(user, "DECHARGE_CHANGER_CONDUCTEUR") &&
+            <Tooltip title="Change conducteur">
+              <Button
+                onClick={() => {
+                  history.push("/decharges/checklist/" + row.id)
+                }}
+                shape="circle" icon={<FaUserEdit />} />
+            </Tooltip>
+          }
+        </>,
+        <>
+          {
+            hasRole(user, "RESTITUER_DECHARGE") && <Tooltip title="Restitution">
+              <Button
+                disabled={row["restititions.id"]}
+                onClick={() => {
+                  history.push("/decharges/restitition/" + row.id)
+                }}
+                shape="circle" icon={<ToTopOutlined />} />
+            </Tooltip>}
+        </>,
 
-            shape="circle" icon={<DeleteOutlined />}
-          />
-        </Popconfirm>
+        <>
+          {
+            hasRole(user, "SUPPRIMER_DECHARGE") &&
+            <Popconfirm
+              title="Êtes-vous sûr de vouloir supprimer?"
+              onConfirm={() => {
+                api.post("/decharges/delete/" + row.id).then(() => {
+                  message.info("Bien Supprimé"); action.reload();
+                })
+              }}
+              onCancel={() => { }}
+              okText="Oui"
+              cancelText="No"
+            >
+              <Button
+                shape="circle" icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
+          }
+        </>
+
       ]
     }
   ];

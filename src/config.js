@@ -36,7 +36,7 @@ import DechargeHistory from "pages/Decharges/DechargeHistory"
 import ChecklistDecharge from "pages/Decharges/ChecklistDecharge"
 
 import UserCars from 'pages/Users/UserCars';
-import DechargeRestititions from 'pages/Decharges/DechargeRestititions';
+import ListeDechargeRestititions from 'pages/Decharges/ListeDechargeRestititions';
 import CarDecharges from 'pages/Cars/CarDecharges';
 import ListCarsState from 'pages/Cars/ListCarsState';
 import AddCarState from 'pages/Cars/AddCarState';
@@ -58,9 +58,20 @@ export default {
   appName: "GPark v1.0.0",
   routes: [
     {
+      path: '/',
+      name: 'dashboard',
+      label: "Tableau de bord",
+      role: "DASHBOARD",
+      component: Dashboard,
+      icon: <DashboardOutlined />,
+      authority: ["dashboard"],
+      hideInSide: true,
+      exact: true
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
-      label: "Dashboard",
+      label: "Tableau de bord",
       role: "DASHBOARD",
       component: Dashboard,
       icon: <DashboardOutlined />,
@@ -76,7 +87,7 @@ export default {
         {
           path: '/users/add',
           name: 'add-user',
-          label: 'Nouvelle utilisateur',
+          label: 'Ajouter utilisateur',
           component: AddUser,
         },
         {
@@ -103,7 +114,7 @@ export default {
         {
           path: '/roles/add',
           name: 'add-roles',
-          label: 'Nouveau role',
+          label: 'Ajouter role',
           component: AddRole,
           exact: true
         },
@@ -133,8 +144,8 @@ export default {
         {
           path: '/cars/add',
           name: 'add-cars',
-          label: 'Nauveau véhicule',
-          role: "NAUVEAU_VEHICULE",
+          label: 'Ajouter véhicule',
+          role: "AJOUTER_VEHICULE",
           component: AddCars,
         },
         {
@@ -164,8 +175,8 @@ export default {
         {
           path: '/cars_state/add',
           name: 'add-status-cars',
-          label: 'Changer status d\'une véhicule',
-          role: "CHANGER_STATUT_VEHICULE",
+          label: 'Modifier status d\'une véhicule',
+          role: "MODIFIER_STATUS_VEHICULE",
           component: AddCarState,
           exact: true
         },
@@ -195,8 +206,8 @@ export default {
         {
           path: '/peremptions/add',
           name: 'add-peremption',
-          label: 'Nouveau péremption',
-          role: "NOUVEAU_PEREMPTIONS",
+          label: 'Ajouter péremption',
+          role: "AJOUTER_PEREMPTIONS",
           component: AddPeremptions,
         },
         {
@@ -226,8 +237,8 @@ export default {
         {
           path: '/drivers/add',
           name: 'add-driver',
-          label: 'Nouvelle conducteur',
-          role: "NOUVEAU_CONDUCTEUR",
+          label: 'Ajouter conducteur',
+          role: "AJOUTER_CONDUCTEUR",
           component: AddDriver,
         },
         {
@@ -258,8 +269,8 @@ export default {
         {
           path: '/clients/add',
           name: 'add-client',
-          label: 'Nouvelle client',
-          role: "NAUVEAU_CLIENT",
+          label: 'Ajouter client',
+          role: "AJOUTER_CLIENT",
           component: AddClient,
         },
         {
@@ -290,8 +301,9 @@ export default {
         {
           path: '/decharges/add',
           name: 'add-decharge',
-          label: 'Nouvelle decharge',
+          label: 'Ajouter decharge',
           component: AddDecharge,
+          role: "AJOUTER_DECHARGE",
         },
         {
           path: '/decharges',
@@ -318,7 +330,8 @@ export default {
           path: '/decharges/restititions',
           name: 'restititions-decharge',
           label: "Etat décharges restituer",
-          component: DechargeRestititions,
+          role: "LISTE_DECHARGES_RESTITUER",
+          component: ListeDechargeRestititions,
         },
         {
           path: '/decharges/history/:car_id',
@@ -351,7 +364,7 @@ export default {
         {
           path: '/missions/add',
           name: 'add-mission',
-          label: 'Nouvelle mission',
+          label: 'Ajouter mission',
           component: AddMission,
         },
       ]
