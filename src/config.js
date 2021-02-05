@@ -31,6 +31,7 @@ import EditClient from "pages/Clients/Edit"
 import AddDecharge from "pages/Decharges/Add"
 import ListDecharges from "pages/Decharges/List"
 import ShowDecharge from "pages/Decharges/Show"
+import EditDecharge from "pages/Decharges/Edit"
 import RestititionDecharge from "pages/Decharges/RestititionDecharge"
 import DechargeHistory from "pages/Decharges/DechargeHistory"
 import ChecklistDecharge from "pages/Decharges/ChecklistDecharge"
@@ -317,6 +318,13 @@ export default {
           name: 'show-decharge',
           label: "Affiche decharge",
           component: ShowDecharge,
+          hideInSide: true
+        },
+        {
+          path: '/decharges/edit/:id',
+          name: 'edit-decharge',
+          label: "Modifier décharge",
+          component: EditDecharge,
           hideInSide: true
         },
         {

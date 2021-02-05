@@ -7,9 +7,10 @@ import {
   EyeOutlined,
   ToTopOutlined,
   DeleteOutlined,
-  HistoryOutlined
+  HistoryOutlined,
+  EditOutlined
 } from '@ant-design/icons';
-import { FaUserEdit } from 'react-icons/fa';
+import { FaUserEdit, FaCheck } from 'react-icons/fa';
 
 import Page from "components/Page";
 import { useAppStore } from "stores";
@@ -20,7 +21,8 @@ import { hasRole } from "utils";
 export default function () {
   const { api, user } = useAppStore()
   const history = useHistory()
-
+  const actionRef = React.useRef()
+  window.actionRef = actionRef
   const columns = [
     {
       title: "Matricule",
@@ -59,7 +61,13 @@ export default function () {
     },
     {
       title: "Cree par",
-      dataIndex: "username",
+      dataIndex: "createdby_username",
+      sorter: true,
+      hideInSearch: true
+    },
+    {
+      title: "Valider par",
+      dataIndex: "acceptedby_username",
       sorter: true,
       hideInSearch: true
     },
@@ -75,6 +83,42 @@ export default function () {
             }}
             shape="circle" icon={<EyeOutlined />} />
         </Tooltip>,
+        <>
+          {hasRole(user, "VALIDER_DECHARGE") &&
+
+            <Popconfirm
+              title="Êtes-vous sûr de vouloir valider?"
+              onConfirm={() => {
+                api.post("/decharges/accepte/" + row.id).then(() => {
+                  message.success("Decharge validée!")
+                  actionRef.current.reload()
+                })
+              }}
+              onCancel={() => { }}
+              okText="Oui"
+              cancelText="No"
+              disabled={row.acceptedby_username}
+            >
+              <Tooltip title="Valider">
+                <Button
+                  disabled={row.acceptedby_username}
+                  shape="circle" icon={<FaCheck />} />
+              </Tooltip>
+            </Popconfirm>
+          }
+        </>,
+        <>
+          {hasRole(user, "MODIFIER_DECHARGE") &&
+            <Tooltip title="Modifier">
+              <Button
+                onClick={() => {
+                  history.push("/decharges/edit/" + row.id)
+                }}
+                shape="circle" icon={<EditOutlined />} />
+            </Tooltip>
+          }
+        </>,
+
         <>
           {
             hasRole(user, "DECHARGE_CHANGER_CONDUCTEUR") &&
@@ -123,7 +167,6 @@ export default function () {
       ]
     }
   ];
-  const actionRef = React.useRef()
   return (
     <Page title={"Décharges"} selectedSiderKey="list-cars">
       <ProTable

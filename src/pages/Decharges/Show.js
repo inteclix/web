@@ -20,11 +20,12 @@ export default function () {
   const history = useHistory()
   const [allData, setAllData] = useState({ step: 0 })
   window.allData = allData
+
   useEffect(() => {
     api.get("decharges/" + params.id).then((res) => {
       setAllData({ ...allData, decharge: res.data.data })
     })
-  }, [])
+  }, [params])
 
 
 

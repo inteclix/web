@@ -113,7 +113,8 @@ export default function () {
       title: "Marque",
       dataIndex: "marque",
       sorter: true,
-      hideInSearch: true
+      hideInSearch: true,
+      
     },
 
     {

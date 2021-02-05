@@ -102,12 +102,12 @@ export const _motif_restititions = [
     label: "FIN DE CONTRAT"
   },
   {
-    value: "REMPLACEMENT VEHICULE (A LA DEMANDE DE CLIENT)",
-    label: "REMPLACEMENT VEHICULE (À LA DEMANDE DE CLIENT)"
+    value: "A LA DEMANDE DE CLIENT",
+    label: "À LA DEMANDE DE CLIENT"
   },
   {
-    value: "REMPLACEMENT VEHICULE (VEHICULE EN PANNE)",
-    label: "REMPLACEMENT VEHICULE (VEHICULE EN PANNE)"
+    value: "VEHICULE EN PANNE",
+    label: "VEHICULE EN PANNE"
   }
 ]
 

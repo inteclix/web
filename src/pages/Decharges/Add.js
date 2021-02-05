@@ -202,6 +202,7 @@ export default function () {
               ]} onFinish={checklist}
               initialValues={
                 {
+                  date_checklist: moment(allData.data["date_decharge"]),
                   assurance: false,
                   boite_pharm: false,
                   carnet_enter: false,
