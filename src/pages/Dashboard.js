@@ -52,7 +52,7 @@ function ChartPiVL() {
   }, [])
 
   if (loading || !dashboardVL) {
-    return <div style={{display: "flex", justifyContent: "center", alignItems:"center"}}>
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
       <Spin size="large" />
     </div>
   }
@@ -70,8 +70,8 @@ function ChartPiVL() {
   const accedente_vl = dashboardVL.accedente_v / dashboardVL.capacity_logistics_vl
 
   const data = [
+    { item: 'NON EXPLOITE', count: non_exploite_vl, percent: non_exploite_vlP, color: "#000" },
     { item: 'AFFECTE', count: affecte_vl, percent: affecte_vlP },
-    { item: 'NON EXPLOITE', count: non_exploite_vl, percent: non_exploite_vlP },
     { item: 'EN PANNE', count: en_panne_vl, percent: en_panne_vlP },
     { item: 'ACCEDENTE', count: accedente_vl, percent: accedente_vlP, color: "red" },
   ];
@@ -79,44 +79,29 @@ function ChartPiVL() {
 
   return (
     <>
-      {
-        /**
-            <Chart height={400} data={data} autoFit>
-              <Coordinate type="theta" radius={0.75} />
-              <Tooltip showTitle={true} />
-              <Axis visible={false} />
-              <Interval
-                position="percent"
-                adjust="stack"
-                color="item"
-                style={{
-                  lineWidth: 1,
-                  stroke: '#fff',
-                }}
-      
-                state={{
-                  selected: {
-                    style: (t) => {
-                      const res = getTheme().geometries.interval.rect.selected.style(t);
-                      return { ...res, fill: 'red' }
-                    }
-                  }
-                }}
-              />
-              <Interaction type='element-single-selected' />
-            </Chart>
-      
-         * 
-         *       <Descriptions title="Informations">
-              <Descriptions.Item label="Capacité">{capacity_logistics_vl}</Descriptions.Item>
-              <Descriptions.Item label="Opérationel">{operationel_vl}</Descriptions.Item>
-              <Descriptions.Item label="Affecté">{affecte_vlP}</Descriptions.Item>
-              <Descriptions.Item label="Non exploité">{non_exploite_vlP}</Descriptions.Item>
-              <Descriptions.Item label="En panne">{en_panne_vlP}</Descriptions.Item>
-              <Descriptions.Item label="Accedenté">{accedente_vlP}</Descriptions.Item>
-            </Descriptions>
-         */
-      }
+      <Chart height={300} data={data} autoFit>
+        <Coordinate type="theta" radius={0.75} />
+        <Tooltip showTitle={true} />
+        <Axis visible={false} />
+        <Interval
+          position="percent"
+          adjust="stack"
+          color="item"
+          style={{
+            lineWidth: 1,
+            stroke: '#fff',
+          }}
+          state={{
+            selected: {
+              style: (t) => {
+                const res = getTheme().geometries.interval.rect.selected.style(t);
+                return { ...res, fill: 'red' }
+              }
+            }
+          }}
+        />
+        <Interaction type='element-single-selected' />
+      </Chart>
       <Row >
         <Statistic
           value={capacity_logistics_vl}
@@ -161,8 +146,6 @@ function ChartPiVL() {
           color="red"
         />
       </Row>
-
-
     </>
   );
 }

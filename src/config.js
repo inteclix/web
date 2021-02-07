@@ -54,6 +54,8 @@ import ListPeremptions from 'pages/Peremptions/List';
 import AddPeremptions from 'pages/Peremptions/Add';
 import EditPeremptions from 'pages/Peremptions/Edit';
 import ListAlertsPeremptions from 'pages/Peremptions/ListAlerts';
+import ChangeCarState from 'pages/Cars/ChangeCarState';
+import EditCarState from 'pages/Cars/EditCarState';
 
 export default {
   appName: "GPark v1.0.0",
@@ -176,10 +178,26 @@ export default {
         {
           path: '/cars_state/add',
           name: 'add-status-cars',
-          label: 'Modifier status d\'une véhicule',
+          label: 'Ajouter status',
           role: "MODIFIER_STATUS_VEHICULE",
           component: AddCarState,
           exact: true
+        },
+        {
+          path: '/cars_state/edit/:id',
+          name: 'edit-status-cars',
+          label: 'Modifier status d\'une véhicule',
+          role: "MODIFIER_STATUS_VEHICULE",
+          component: EditCarState,
+          hideInSide: true,
+        },
+        {
+          path: '/cars/stats/edit/:id',
+          name: 'edit-car-state',
+          label: 'Modifier Status véhicule',
+          role: "MODIFIER_STATUS_VEHICULE",
+          component: ChangeCarState,
+          hideInSide: true
         },
         {
           path: '/cars/edit/:id',

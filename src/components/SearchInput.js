@@ -3,7 +3,7 @@ import Page from "components/Page"
 import { AutoComplete, Input } from "antd"
 import { useAppStore } from "stores"
 
-export default ({ url, mapOptionToString, placeholder, onSelect, onChange, style, defaultOption }) => {
+export default ({ url, mapOptionToString, placeholder, onSelect, onChange, style, defaultOption, disabled }) => {
   const { api } = useAppStore()
   const [value, setValue] = useState('');
   const [options, setOptions] = useState([]);
@@ -24,6 +24,7 @@ export default ({ url, mapOptionToString, placeholder, onSelect, onChange, style
           return mapOptionToString(defaultOption)
         }
       }}
+      disabled={disabled}
       style={style}
       onSelect={onSelect}
       onSearch={onSearch}

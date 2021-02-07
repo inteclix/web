@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import { Button, Input, message, Popconfirm } from "antd";
+import { Button, Input, message, Popconfirm, Tooltip } from "antd";
 
 import ProTable from "@ant-design/pro-table";
 import Page from "components/Page";
@@ -14,9 +14,12 @@ import {
   HistoryOutlined,
   EditOutlined
 } from '@ant-design/icons';
+import { FaInfo, FaPaintBrush } from "react-icons/fa"
+
+import { hasRole } from "utils";
 
 export default function () {
-  const { api } = useAppStore()
+  const { api, user } = useAppStore()
   const history = useHistory()
 
   const columns = [
@@ -30,7 +33,7 @@ export default function () {
       title: "code_gps",
       dataIndex: "code_gps",
       sorter: true,
-      hideInSearch: true
+      hideInSearch: false
     },
     {
       title: "Designation",
@@ -39,7 +42,13 @@ export default function () {
       sorter: true
     },
     {
-      title: "Date",
+      title: "Observation",
+      dataIndex: "observation",
+      hideInSearch: true,
+      sorter: true
+    },
+    {
+      title: "Date status",
       dataIndex: "state_date",
       hideInSearch: true,
       sorter: true,
@@ -69,7 +78,19 @@ export default function () {
         >
           <Button
             shape="circle" icon={<DeleteOutlined />} />
-        </Popconfirm>
+        </Popconfirm>,
+        <>
+          {
+            hasRole(user, "MODIFIER_STATUS_VEHICULE") &&
+            <Tooltip title="Modifier status véhicule">
+              <Button
+                onClick={() => {
+                  history.push("/cars_state/edit/" + row.id)
+                }}
+                shape="circle" icon={<EditOutlined />} />
+            </Tooltip>
+          }
+        </>
       ]
     }
   ];

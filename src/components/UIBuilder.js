@@ -84,6 +84,7 @@ export const FormBuilder = ({
                   field[item.name] = option.id;
                   form.setFieldsValue(field);
                 }}
+                disabled={item.disabled}
                 onChange={(value, option) => {
                   if (!option) {
                     const field = {};

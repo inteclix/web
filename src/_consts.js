@@ -128,5 +128,13 @@ export const _carStateName = [
   {
     value: "ACCIDENTE",
     label: "ACCIDENTE"
+  },
+  {
+    value: "VENDU",
+    label: "VENDU"
+  },
+  {
+    value: "VOLEE",
+    label: "VOLEE"
   }
 ]

@@ -7,7 +7,7 @@ import Page from "components/Page";
 import { useAppStore } from "stores";
 import { useHistory } from "react-router-dom";
 import { _prop } from "_consts";
-import { FaInfo } from "react-icons/fa"
+import { FaInfo, FaPaintBrush } from "react-icons/fa"
 import {
   EyeOutlined,
   ToTopOutlined,
@@ -95,7 +95,7 @@ export default function () {
       title: "Code GPS",
       dataIndex: "code_gps",
       sorter: true,
-      hideInSearch: true
+      hideInSearch: false
     },
     {
       title: "Genre",
@@ -150,7 +150,7 @@ export default function () {
         <>
           {
             hasRole(user, "MODIFIER_VEHICULE") &&
-            <Tooltip title="Modifier">
+            <Tooltip title="Modifier véhicule">
               <Button
                 onClick={() => {
                   history.push("/cars/edit/" + row.id)
@@ -159,6 +159,18 @@ export default function () {
             </Tooltip>
           }
         </>,
+        <>
+        {
+          hasRole(user, "MODIFIER_STATUS_VEHICULE") &&
+          <Tooltip title="Ajouter Status">
+            <Button
+              onClick={() => {
+                history.push("/cars/stats/edit/" + row.id)
+              }}
+              shape="circle" icon={<FaPaintBrush />} />
+          </Tooltip>
+        }
+      </>,
         <Tooltip title="Historiques des décharges">
           <Button
             onClick={() => {
