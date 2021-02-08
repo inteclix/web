@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { useHistory } from "react-router-dom";
 
 
-import { Button, Skeleton } from 'antd';
+import { Button, Skeleton, PageHeader } from 'antd';
 import {
   ArrowLeftOutlined
 } from '@ant-design/icons';
@@ -12,7 +12,7 @@ import Page from "components/Page"
 import { useAppStore } from "stores";
 
 import { _postes, _messages } from "_consts";
-export default ({ title, withBack, loading, selectedSiderKey, children }) => {
+export default ({ title, subTitle, withBack, loading, selectedSiderKey, children }) => {
   const history = useHistory()
   const { setSelectedSiderKey } = useAppStore()
   useEffect(() => {
@@ -26,42 +26,33 @@ export default ({ title, withBack, loading, selectedSiderKey, children }) => {
     title ? document.title = title + " - " + config.appName : document.title = config.appName
   }, [title])
 
-  if (loading && withBack) {
-    return (
-      <div style={{ padding: 15 }}>
-        <Button icon={<ArrowLeftOutlined />} onClick={() => history.goBack()}></Button>
-        <hr />
-        <Skeleton />
-      </div>
-    )
-  }
   if (loading) {
     return (
-      <div style={{ padding: 15 }}>
-        <Skeleton />
+      <div >
+        <PageHeader
+          onBack={() => history.goBack()}
+          backIcon={withBack ? <ArrowLeftOutlined /> : null}
+          title={title}
+          subTitle={subTitle}
+        />,
+        <div style={{ padding: 15 }}>
+          <Skeleton />
+        </div>
       </div>
     )
   }
+
   return (
-    <div style={{ padding: 15 }}>
-      {
-        withBack &&
-        <>
-          <div style={{ display: "flex", alignItems: "baseline" }}>
-            <Button icon={<ArrowLeftOutlined />} onClick={() => history.goBack()}></Button>
-            <h1 style={{ marginLeft: 20 }}>{title}</h1>
-          </div>
-          <hr />
-        </>
-      }
-      {
-        !withBack &&
-        <>
-          <h1>{title}</h1>
-          <hr />
-        </>
-      }
-      {children}
+    <div>
+      <PageHeader
+        onBack={() => history.goBack()}
+        backIcon={withBack ? <ArrowLeftOutlined /> : null}
+        title={title}
+        subTitle={subTitle}
+      />
+      <div style={{ padding: 15 }}>
+        {children}
+      </div>
     </div>
   )
 }

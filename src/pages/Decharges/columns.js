@@ -95,6 +95,11 @@ export const formCheckListRestititionItems = [
     name: "assurance",
     label: "Assurance",
     type: "checkbox",
+  },
+  {
+    name: "assurance_marchandises",
+    label: "Assurance marchandises",
+    type: "checkbox",
   }
   ,
   {

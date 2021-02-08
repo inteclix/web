@@ -63,6 +63,7 @@ export default function () {
               odometre: allData?.decharge && allData.decharge.odometre,
               date_restitition: moment(),
               assurance: allData.decharge.assurance,
+              assurance_marchandises: allData.decharge.assurance_marchandises,
               boite_pharm: allData.decharge.boite_pharm,
               carnet_enter: allData.decharge.carnet_enter,
               carte_gpl: allData.decharge.carte_gpl,

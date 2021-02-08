@@ -165,7 +165,7 @@ export default class PrintDecharge extends React.Component {
             </b>
             , <u>N° TEL:</u> <b>{checklist["drivers.tel"]}</b>
             <br />
-            Reconnais avoir reçu ce jour{" "}
+            Reconnais avoir <u>reçu</u> ce jour{" "}
             <b>{moment(checklist["date_checklist"])?.format("DD-MM-Y")}</b>:
             <div
               style={{
@@ -189,11 +189,16 @@ export default class PrintDecharge extends React.Component {
                 name="assurance"
                 title="Assurance"
               />
+              <Document
+                checklist={checklist}
+                name="assurance_marchandises"
+                title="Assurance marchandises"
+              />
               <Document checklist={checklist} name="vignette" title="Vignette" />
               <Document
                 checklist={checklist}
                 name="scanner"
-                title="scanner"
+                title="Scanner"
               />
               <Document
                 checklist={checklist}
@@ -203,12 +208,12 @@ export default class PrintDecharge extends React.Component {
               <Document
                 checklist={checklist}
                 name="carnet_enter"
-                title="carnet_enter"
+                title="Carnet d'entretien"
               />
               <Document
                 checklist={checklist}
                 name="carte_gpl"
-                title="carte_gpl"
+                title="Carte GPL"
               />
             </div>
             <div

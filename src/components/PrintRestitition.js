@@ -165,7 +165,7 @@ export default class PrintDecharge extends React.Component {
             </b>
             , <u>N° TEL:</u> <b>{decharge["drivers.tel"]}</b>
             <br />
-            Reconnais avoir restitué ce jour{" "}
+            Reconnais avoir <u>restitué</u> ce jour{" "}
             <b>{moment(decharge["decharges.date_decharge"])?.format("D-M-yy")}</b>:
             <div
               style={{
@@ -189,6 +189,11 @@ export default class PrintDecharge extends React.Component {
                 checklist={checklist}
                 name="assurance"
                 title="Assurance"
+              />
+              <Document
+                checklist={checklist}
+                name="assurance_marchandises"
+                title="Assurance marchandises"
               />
               <Document checklist={checklist} name="vignette" title="Vignette" />
               <Document
@@ -293,6 +298,11 @@ export default class PrintDecharge extends React.Component {
                 {
                   decharge.assurance === 1 &&
                   checklist.assurance === 0 &&
+                  "Assurance, "
+                }
+                {
+                  decharge.assurance_marchandises === 1 &&
+                  checklist.assurance_marchandises === 0 &&
                   "Assurance, "
                 }
                 {

@@ -135,6 +135,11 @@ export default function () {
               type: "checkbox"
             },
             {
+              name: "assurance_marchandises",
+              label: "Assurance marchandises",
+              type: "checkbox"
+            },
+            {
               name: "scanner",
               label: "Scanner",
               type: "checkbox"
@@ -215,6 +220,7 @@ export default function () {
           initialValues={{
             odometre: allData.decharge.odometre,
             assurance: allData.decharge.assurance,
+            assurance_marchandises: allData.decharge.assurance_marchandises,
             boite_pharm: allData.decharge.boite_pharm,
             carnet_enter: allData.decharge.carnet_enter,
             carte_gpl: allData.decharge.carte_gpl,

@@ -107,14 +107,22 @@ export default function () {
       title: "Groupe",
       dataIndex: "groupName",
       sorter: true,
-      hideInSearch: true
+      hideInSearch: true,
+      /*
+      filters: [
+        { text: 'LEGER', value: 'LEGER' },
+        { text: 'LIVRAISON MARCHANDISE', value: 'LIVRAISON MARCHANDISE' },
+        { text: 'LOURD', value: 'LOURD' },
+        { text: 'TRANSPORT PERSONNEL', value: 'TRANSPORT PERSONNEL' },
+      ]
+      */
     },
     {
       title: "Marque",
       dataIndex: "marque",
       sorter: true,
       hideInSearch: true,
-      
+
     },
 
     {
@@ -129,7 +137,7 @@ export default function () {
       sorter: true,
       hideInSearch: true,
       render: (text, row, index, action) => {
-        return <span style={{ color: row.date_restitition ? "red" : "green" }}>{row.drivers_fullname}</span>
+        return <span style={{ color: !row.client ? "red" : "green" }}>{row.drivers_fullname}</span>
       }
     },
     {
@@ -160,17 +168,17 @@ export default function () {
           }
         </>,
         <>
-        {
-          hasRole(user, "MODIFIER_STATUS_VEHICULE") &&
-          <Tooltip title="Ajouter Status">
-            <Button
-              onClick={() => {
-                history.push("/cars/stats/edit/" + row.id)
-              }}
-              shape="circle" icon={<FaPaintBrush />} />
-          </Tooltip>
-        }
-      </>,
+          {
+            hasRole(user, "MODIFIER_STATUS_VEHICULE") &&
+            <Tooltip title="Ajouter Status">
+              <Button
+                onClick={() => {
+                  history.push("/cars/stats/edit/" + row.id)
+                }}
+                shape="circle" icon={<FaPaintBrush />} />
+            </Tooltip>
+          }
+        </>,
         <Tooltip title="Historiques des décharges">
           <Button
             onClick={() => {
@@ -196,34 +204,36 @@ export default function () {
   return (
     <Page title={"Véhicules"} selectedSiderKey="list-cars">
       <ProTable
+        actionRef={actionRef}
         toolBarRender={(request) => [
           <Tooltip title="Exporter fiechier EXCEL" >
-            <Button onClick={() => {
-              api.get("/cars/export",
-                {
-                  responseType: 'blob',
-                  headers: {
-                    'Content-Disposition': `attachment; filename=etat_vehicules.xlsx`,
-                    'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                  }
-                }
-              ).then((res) => {
-                const url = window.URL.createObjectURL(new Blob([res.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'etat_vehicules_' + moment().format("DD_MM_YYYY__HH_MM") + '.xlsx');
-                document.body.appendChild(link);
-                link.click();
-              })
-            }}
-              key="button"
-              icon={<RiFileExcel2Line
+            <div style={{ cursor: "pointer", "marginTop": 7 }} >
+              <RiFileExcel2Line
+                size={20}
+                onClick={() => {
+                  api.get("/cars/export",
+                    {
+                      responseType: 'blob',
+                      headers: {
+                        'Content-Disposition': `attachment; filename=etat_vehicules.xlsx`,
+                        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                      }
+                    }
+                  ).then((res) => {
+                    const url = window.URL.createObjectURL(new Blob([res.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'etat_vehicules_' + moment().format("DD_MM_YYYY__HH_MM") + '.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                  })
+                }}
               />
-              } />
-          </Tooltip>
+            </div>
+          </Tooltip>,
         ]}
-        size="small"
         search={true}
+        size={"small"}
         columns={columns}
         ellipsis={true}
         request={(params, sort, filters) => {

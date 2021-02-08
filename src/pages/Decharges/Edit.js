@@ -162,6 +162,12 @@ export default function () {
             name: "assurance",
             label: "Assurance",
             type: "checkbox",
+          },
+          ,
+          {
+            name: "assurance_marchandises",
+            label: "Assurance marchandises",
+            type: "checkbox",
           }
           ,
           {
@@ -258,6 +264,7 @@ export default function () {
             date_decharge: moment(dechargeData["decharges.date_decharge"]),
             date_checklist: moment(dechargeData["date_checklist"]),
             assurance: dechargeData.assurance,
+            assurance_marchandises: dechargeData.assurance_marchandises,
             boite_pharm: dechargeData.boite_pharm,
             carnet_enter: dechargeData.carnet_enter,
             carte_gpl: dechargeData.carte_gpl,

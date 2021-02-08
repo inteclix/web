@@ -26,7 +26,7 @@ export default function () {
   const columns = [
     {
       title: "Matricule",
-      dataIndex: "cars.matricule",
+      dataIndex: "cars_matricule",
       copyable: true,
       sorter: true,
     },
@@ -34,7 +34,7 @@ export default function () {
       title: "Code GPS",
       dataIndex: "code_gps",
       sorter: true,
-      hideInSearch: true
+      hideInSearch: false
     },
     {
       title: "Client",
