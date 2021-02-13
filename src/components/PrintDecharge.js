@@ -110,11 +110,7 @@ export default class PrintDecharge extends React.Component {
         </div>
         <div style={styles.pageBody}>
           <div style={{ fontSize: "6mm", marginBottom: "2mm" }}>
-            <b>Client: </b>{" "}
-            {checklist["clients.designation"]
-              ? checklist["clients.designation"]
-              : "/"}
-            .
+            <b>Client: </b> {checklist["clients.designation"]} / {checklist["clients_mother_designation"]}
           </div>
           <div
             style={{
@@ -355,12 +351,12 @@ export default class PrintDecharge extends React.Component {
 }
 
 const Document = ({ checklist, name, title }) => {
-  if (checklist[name]==true) {
+  if (checklist[name] == true) {
     return (
       <div style={{ margin: "2mm" }}>
         <input
           style={{ marginRight: "2mm" }}
-          checked={checklist[name]==true}
+          checked={checklist[name] == true}
           type="checkbox"
         />
         <b>{title}</b>

@@ -8,7 +8,8 @@ import {
   message,
   Tooltip,
   List,
-  Badge
+  Badge,
+  Divider
 } from 'antd';
 
 import { DownOutlined, LogoutOutlined, BellOutlined } from '@ant-design/icons';
@@ -26,7 +27,7 @@ export default () => {
   const history = useHistory()
 
   const getNotifications = () => {
-    api.get("/notifications")
+    api.get("/notifications?pageSize=5")
       .then((res) => {
         //console.log()
         setNotifications(res.data.data)
@@ -34,29 +35,33 @@ export default () => {
   }
   useEffect(() => {
     getNotifications()
-    const intr = setInterval(getNotifications, 30000)
+    const intr = setInterval(getNotifications, 60000)
     return () => clearInterval(intr)
   }, [])
 
   const NotificatiobContent = () => {
     return (
-      <List
-        style={{ width: 300 }}
-        itemLayout="horizontal"
-        dataSource={notifications}
-        renderItem={item => (
-          <List.Item>
-            <List.Item.Meta
-              title={<a onClick={() => {
-                api.post("/notifications/" + item.id).then(() => {
-                  history.push(item.url)
-                })
-              }} >{item.title}</a>}
-              description={item.sub_title}
-            />
-          </List.Item>
-        )}
-      />
+      <div>
+        <List
+          style={{ width: 300 }}
+          itemLayout="horizontal"
+          dataSource={notifications}
+          renderItem={item => (
+            <List.Item>
+              <List.Item.Meta
+                title={<a onClick={() => {
+                  api.post("/notifications/" + item.id).then(() => {
+                    history.push(item.url)
+                  })
+                }} >{item.title}</a>}
+                description={`${item.sub_title} | ${item.is_read ? "DEJA VU" : "Non vu"}`}
+              />
+            </List.Item>
+          )}
+        />
+        <Divider />
+        <Link to={"/notifications"} >Plus des notifications</Link>
+      </div>
     )
   }
 

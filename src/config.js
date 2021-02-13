@@ -44,7 +44,7 @@ import AddCarState from 'pages/Cars/AddCarState';
 import GroupCar from 'pages/Cars/GroupCar';
 
 
-import AddMission from "pages/Missions/Add"
+import AddVLMission from "pages/Missions/AddVL"
 import ListRoles from 'pages/Users/ListRoles';
 import AddRole from 'pages/Users/AddRole';
 import UsersRoles from "pages/Users/UsersRoles"
@@ -56,6 +56,8 @@ import EditPeremptions from 'pages/Peremptions/Edit';
 import ListAlertsPeremptions from 'pages/Peremptions/ListAlerts';
 import ChangeCarState from 'pages/Cars/ChangeCarState';
 import EditCarState from 'pages/Cars/EditCarState';
+import Notifications from 'pages/Users/Notifications';
+import ListMissionsVL from 'pages/Missions/ListMissionsVL';
 
 export default {
   appName: "GPark v1.0.0",
@@ -79,6 +81,15 @@ export default {
       component: Dashboard,
       icon: <DashboardOutlined />,
       authority: ["dashboard"],
+    },
+    {
+      path: '/notifications',
+      name: 'Notifications',
+      label: "Notifications",
+      component: Notifications,
+      icon: <DashboardOutlined />,
+      authority: ["dashboard"],
+      hideInSide: true,
     },
     // users 
     {
@@ -355,7 +366,7 @@ export default {
         {
           path: '/decharges/restititions',
           name: 'restititions-decharge',
-          label: "Etat décharges restituer",
+          label: "Décharges restituer",
           role: "LISTE_DECHARGES_RESTITUER",
           component: ListeDechargeRestititions,
         },
@@ -375,26 +386,29 @@ export default {
         },
       ]
     },
-    /*
+
     {
       name: 'missions',
-      label: "Marchandises",
-      icon: <GiPathDistance style={{marginRight: 10}}/>,
+      label: "Missions",
+      icon: <GiPathDistance style={{ marginRight: 10 }} />,
       routes: [
         {
-          path: '/remorque/add',
-          name: 'camion-remorque',
-          label: 'Camions > remorque',
-          component: CamionRemorque,
+          path: '/missions/add_vl',
+          name: 'add-mission-vl',
+          label: 'Ajouter mission VL',
+          role: "AJOUTER_MISSION_VL",
+          component: AddVLMission,
         },
         {
-          path: '/missions/add',
-          name: 'add-mission',
-          label: 'Ajouter mission',
-          component: AddMission,
+          path: '/missions_vl',
+          name: 'list-missions-vl',
+          role: "LISTE_MISSIONS_VL",
+          label: 'List missions VL',
+          component: ListMissionsVL,
+          exact: true
         },
       ]
     },
-    */
+
   ]
 }

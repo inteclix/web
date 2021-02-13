@@ -3,14 +3,14 @@ import Page from "components/Page"
 import { AutoComplete, Input } from "antd"
 import { useAppStore } from "stores"
 
-export default ({ url, mapOptionToString, placeholder, onSelect, onChange, style, defaultOption, disabled }) => {
+export default ({ url, query_string, mapOptionToString, placeholder, onSelect, onChange, style, defaultOption, disabled }) => {
   const { api } = useAppStore()
   const [value, setValue] = useState('');
   const [options, setOptions] = useState([]);
 
 
   const onSearch = (searchText) => {
-    api.get(`${url}?data=${searchText}`).then(({ data }) => {
+    api.get(`${url}?data=${searchText}&${query_string}`).then(({ data }) => {
       const options = data.data.map(c => ({ ...c, value: mapOptionToString(c), }))
       setOptions(options)
     })

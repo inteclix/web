@@ -76,11 +76,19 @@ export default function () {
           backgroundColor: "white",
           padding: 5,
           textAlign: "center",
-
+          paddingBottom: 5,
+          display: "flex",
+          alignItems: "center",
         }}>
-          <Link to="/">
-            <h1 style={{ color: "black" }}>GPark</h1>
-          </Link>
+          <div style={{
+            display: "flex", justifyContent: "center",
+            alignItems: "center", flex: 1
+          }}>
+
+            <Link to="/">
+              <img alt="Gpark" style={{ height: 36 }} src="gpark_logo2.png" />
+            </Link>
+          </div>
         </div>
         <Side />
         <Layout style={{ marginLeft: 280, overflowY: "scroll" }}>

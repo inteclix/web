@@ -6,7 +6,7 @@ import ProTable from "@ant-design/pro-table";
 import Page from "components/Page";
 import { useAppStore } from "stores";
 import { useHistory } from "react-router-dom";
-import { _prop } from "_consts";
+import { _carStateName, _carStates, _marque, _prop } from "_consts";
 import { FaInfo, FaPaintBrush } from "react-icons/fa"
 import {
   EyeOutlined,
@@ -101,50 +101,72 @@ export default function () {
       title: "Genre",
       dataIndex: "genre",
       sorter: true,
-      hideInSearch: true
+      hideInSearch: true,
+      filters: [
+        { text: "V P", value: "V P" },
+        { text: "CAMION", value: "CAMION" },
+        { text: "TRACTEUR", value: "TRACTEUR" },
+        { text: "REMORQUE", value: "REMORQUE" },
+        { text: "BUS", value: "BUS" },
+        { text: "UTILITAIRE", value: "UTILITAIRE" },
+        { text: "MICRO BUS", value: "MICRO BUS" },
+        { text: "V H", value: "V H" },
+        { text: "MOTO", value: "MOTO" },
+        { text: "AMBULANCE", value: "AMBULANCE" },
+        { text: "MOTOCYCLE", value: "MOTOCYCLE" },
+      ]
     },
     {
       title: "Groupe",
       dataIndex: "groupName",
       sorter: true,
       hideInSearch: true,
-      /*
+
       filters: [
         { text: 'LEGER', value: 'LEGER' },
         { text: 'LIVRAISON MARCHANDISE', value: 'LIVRAISON MARCHANDISE' },
         { text: 'LOURD', value: 'LOURD' },
         { text: 'TRANSPORT PERSONNEL', value: 'TRANSPORT PERSONNEL' },
       ]
-      */
+
     },
     {
       title: "Marque",
       dataIndex: "marque",
       sorter: true,
       hideInSearch: true,
-
+      filters: _marque.map((m) => ({ text: m.label, value: m.value }))
     },
-
+    {
+      title: "Odometre",
+      dataIndex: "odometre",
+      sorter: true,
+      hideInSearch: true,
+    },
     {
       title: "Client",
       dataIndex: "client",
+      copyable: true,
       sorter: true,
-      hideInSearch: true
+      hideInSearch: false
     },
     {
       title: "Conducteur",
       dataIndex: "drivers_fullname",
+      copyable: true,
       sorter: true,
       hideInSearch: true,
       render: (text, row, index, action) => {
-        return <span style={{ color: !row.client ? "red" : "green" }}>{row.drivers_fullname}</span>
+        return <span style={{ color: !row.client ? "red" : "rgba(0,0,0,.85)" }}>{row.drivers_fullname}</span>
       }
     },
     {
       title: "Status",
       dataIndex: "state",
       sorter: true,
-      hideInSearch: true
+      hideInSearch: true,
+      filters: _carStateName.map((m) => ({ text: m.label, value: m.value }))
+
     },
     {
       title: "option",
@@ -241,10 +263,12 @@ export default function () {
             params["sortBy"] = Object.keys(sort)[0]
             params["sort"] = Object.values(sort)[0]
           }
-          if (filters) {
-            params["filterBy"] = Object.keys(filters)[0]
-            params["filter"] = Object.values(filters)
-          }
+          /* if (filters) {
+             params["filterBy"] = Object.keys(filters)[0]
+             params["filter"] = Object.values(filters)
+           }*/
+          console.log(filters)
+          params["filters"] = filters
           return api.get("/cars", { params }).then((res) => res.data)
         }}
         pagination={{

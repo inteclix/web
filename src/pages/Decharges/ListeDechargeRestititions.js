@@ -14,10 +14,11 @@ import { useAppStore } from "stores";
 import { useHistory } from "react-router-dom";
 import { _prop } from "_consts";
 import { useRouteMatch } from "react-router-dom/cjs/react-router-dom.min";
+import { hasRole } from "utils";
 
 
 export default function () {
-  const { api } = useAppStore()
+  const { api, user } = useAppStore()
   const history = useHistory()
   const routeMatch = useRouteMatch()
   const columns = [
@@ -35,12 +36,22 @@ export default function () {
     },
     {
       title: "Client",
-      dataIndex: "clients.designation",
+      dataIndex: "clients_designation",
+      copyable: true,
       sorter: true,
-      hideInSearch: true
+      hideInSearch: false,
+      render: (text, row, index, action) => {
+        if (row.clients_mother_designation) {
+          return row.clients_designation + " / " + row.clients_mother_designation
+
+        } else {
+          return row.clients_designation
+        }
+      }
     },
     {
       title: "Conducteur",
+      copyable: true,
       dataIndex: "drivers_fullname",
       hideInSearch: true
     },
@@ -81,19 +92,24 @@ export default function () {
             }}
             shape="circle" icon={<EyeOutlined />} />
         </Tooltip>,
-        <Popconfirm
-          title="Êtes-vous sûr de vouloir supprimer?"
-          onConfirm={() => {
-            api.post("/decharges/restititions/delete/" + row["restititions.id"]).then(() => {
-              message.info("Bien Supprimé"); action.reload();
-            })
-          }}
-          onCancel={() => { }}
-          okText="Oui"
-          cancelText="No"
-        >
-          <Button shape="circle" icon={<DeleteOutlined />} />
-        </Popconfirm >
+        <>
+          {
+            hasRole(user, "SUPPRIMER_DECHARGE_RESTIUER") &&
+            <Popconfirm
+              title="Êtes-vous sûr de vouloir supprimer?"
+              onConfirm={() => {
+                api.post("/decharges/restititions/delete/" + row["restititions.id"]).then(() => {
+                  message.info("Bien Supprimé"); action.reload();
+                })
+              }}
+              onCancel={() => { }}
+              okText="Oui"
+              cancelText="No"
+            >
+              <Button shape="circle" icon={<DeleteOutlined />} />
+            </Popconfirm >
+          }
+        </>
       ]
     }
   ];

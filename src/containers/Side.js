@@ -73,7 +73,7 @@ export default () => {
                   </SubMenu>
                 )
               } else {
-                return <Menu.Item key={"m-" + i} onClick={() => history.push(r.path)} key={r.name} icon={r.icon}>{r.label}</Menu.Item>
+                return r.hideInSide ? undefined : <Menu.Item key={"m-" + i} onClick={() => history.push(r.path)} key={r.name} icon={r.icon}>{r.label}</Menu.Item>
               }
             }
           })

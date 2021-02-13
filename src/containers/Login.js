@@ -56,16 +56,22 @@ export default function Login() {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         style={{
-          width: 350,
+          width: 400,
           padding: 20,
-          border: "1px solid lightgray",
           borderRadius: 5
         }}
 
       >
-        <h2>Authentification</h2>
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+        }}>
+          <img alt="Gpark" style={{ height: 72, width: 72 }} src="gpark_logo.png" />
+        </div>
+        <Divider />
+        <h1 style={{ fontSize: 30, fontWeight: 700 }}>Se connecter à G P A R K</h1>
         <Form.Item
-          label="Username"
+          label="Nom d'utilisateur"
           name="username"
           rules={[
             {
@@ -78,7 +84,7 @@ export default function Login() {
         </Form.Item>
 
         <Form.Item
-          label="Password"
+          label="Mot de pass"
           name="password"
           rules={[
             {

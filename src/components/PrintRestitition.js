@@ -111,11 +111,7 @@ export default class PrintDecharge extends React.Component {
         </div>
         <div style={styles.pageBody}>
           <div style={{ fontSize: "6mm", marginBottom: "2mm" }}>
-            <b>Client: </b>{" "}
-            {decharge["clients.designation"]
-              ? decharge["clients.designation"]
-              : "/"}
-            .
+            <b>Client: </b> {decharge["clients.designation"]} / {decharge["clients_mother_designation"]}
           </div>
           <div
             style={{
@@ -166,7 +162,7 @@ export default class PrintDecharge extends React.Component {
             , <u>N° TEL:</u> <b>{decharge["drivers.tel"]}</b>
             <br />
             Reconnais avoir <u>restitué</u> ce jour{" "}
-            <b>{moment(decharge["decharges.date_decharge"])?.format("D-M-yy")}</b>:
+            <b>{moment(decharge?.restitition?.date_restitition)?.format("D-M-yy")}</b>:
             <div
               style={{
                 marginTop: "4mm",

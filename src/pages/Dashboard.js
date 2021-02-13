@@ -47,7 +47,7 @@ function ChartPiVL() {
 
   useEffect(() => {
     getDashboardVL()
-    const intr = setInterval(getDashboardVL, 30000)
+    const intr = setInterval(getDashboardVL, 60000)
     return () => clearInterval(intr)
   }, [])
 
@@ -79,30 +79,30 @@ function ChartPiVL() {
 
   return (
     <>
-      <Chart height={300} data={data} autoFit>
-        <Coordinate type="theta" radius={0.75} />
-        <Tooltip showTitle={true} />
-        <Axis visible={false} />
-        <Interval
-          position="percent"
-          adjust="stack"
-          color="item"
-          style={{
-            lineWidth: 1,
-            stroke: '#fff',
-          }}
-          state={{
-            selected: {
-              style: (t) => {
-                const res = getTheme().geometries.interval.rect.selected.style(t);
-                return { ...res, fill: 'red' }
-              }
-            }
-          }}
-        />
-        <Interaction type='element-single-selected' />
-      </Chart>
       <Row >
+        <Chart height={350} data={data} autoFit>
+          <Coordinate type="theta" radius={0.75} />
+          <Tooltip showTitle={true} />
+          <Axis visible={false} />
+          <Interval
+            position="percent"
+            adjust="stack"
+            color="item"
+            style={{
+              lineWidth: 1,
+              stroke: '#fff',
+            }}
+            state={{
+              selected: {
+                style: (t) => {
+                  const res = getTheme().geometries.interval.rect.selected.style(t);
+                  return { ...res, fill: 'red' }
+                }
+              }
+            }}
+          />
+          <Interaction type='element-single-selected' />
+        </Chart>
         <Statistic
           value={capacity_logistics_vl}
           icon={<FaCarAlt style={{ marginRight: 10 }} />}
@@ -146,6 +146,7 @@ function ChartPiVL() {
           color="red"
         />
       </Row>
+
     </>
   );
 }
@@ -174,7 +175,7 @@ export default () => {
 
   return (
     <Page title="Dashboard">
-      <Divider orientation="left"><h1>Véhicules<b> GROUPE LEGER</b></h1></Divider>
+      <Divider orientation="left"><h1>VL</h1></Divider>
       <ChartPiVL />
     </Page>
   )

@@ -38,13 +38,24 @@ export default function () {
     },
     {
       title: "Client",
-      dataIndex: "clients.designation",
+      dataIndex: "clients_designation",
+      copyable: true,
       sorter: true,
-      hideInSearch: true
+      hideInSearch: false,
+      render: (text, row, index, action) => {
+        if (row.clients_mother_designation) {
+          return row.clients_designation + " / " + row.clients_mother_designation
+
+        } else {
+          return row.clients_designation
+        }
+      }
     },
     {
       title: "Conducteur",
       dataIndex: "drivers_fullname",
+      sorter: true,
+      copyable: true,
       hideInSearch: true
     },
     {
