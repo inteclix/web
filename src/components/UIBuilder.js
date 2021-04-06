@@ -77,7 +77,7 @@ export const FormBuilder = ({
             >
               <SearchInput
                 url={item.url}
-                query_string={item.query_string} 
+                query_string={item.query_string}
                 defaultOption={initialValues[item.defaultOptionName]}
                 mapOptionToString={item.mapOptionToString}
                 onSelect={(value, option) => {
@@ -183,15 +183,14 @@ export const FormBuilder = ({
           );
         }
       })}
-
+      {
+        extra(form)
+      }
       <Item {...formTailLayout}>
         <Button loading={loading} type="primary" htmlType="submit">
           Envoyer
         </Button>
       </Item>
-      {
-        extra(form)
-      }
     </Form>
   );
 };

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState} from "react";
 import moment from "moment";
 import { Button, Popover, message, Tooltip, Spin, List, Typography } from "antd";
 
@@ -83,6 +83,7 @@ const InfoCar = ({ row }) => {
 export default function () {
   const { api, user } = useAppStore()
   const history = useHistory()
+  const [_params, setParams] = useState(null)
   const columns = [
     {
       title: "Matricule",
@@ -233,7 +234,7 @@ export default function () {
               <RiFileExcel2Line
                 size={20}
                 onClick={() => {
-                  api.get("/cars/export",
+                  api.get("/cars?format=excel",
                     {
                       responseType: 'blob',
                       headers: {
@@ -269,6 +270,8 @@ export default function () {
            }*/
           console.log(filters)
           params["filters"] = filters
+          params["format"] = "json"
+          setParams(params)
           return api.get("/cars", { params }).then((res) => res.data)
         }}
         pagination={{

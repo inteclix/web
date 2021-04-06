@@ -57,7 +57,10 @@ import ListAlertsPeremptions from 'pages/Peremptions/ListAlerts';
 import ChangeCarState from 'pages/Cars/ChangeCarState';
 import EditCarState from 'pages/Cars/EditCarState';
 import Notifications from 'pages/Users/Notifications';
-import ListMissionsVL from 'pages/Missions/ListMissionsVL';
+import ListVL from 'pages/Missions/ListVL';
+import ListMiseDispositionVL from 'pages/Clients/ListMiseDispositionVL';
+import ShowVL from "pages/Missions/ShowVL"
+import EditVL from 'pages/Missions/EditVL';
 
 export default {
   appName: "GPark v1.0.0",
@@ -311,7 +314,14 @@ export default {
           component: ListClients,
           exact: true
         },
-
+        {
+          path: '/mise_disposition_vl',
+          name: 'list-mise-a-disposition-vl',
+          label: 'Mise à disposition VL',
+          role: "LISTE_MISE_DISPOSITION_VL",
+          component: ListMiseDispositionVL,
+          exact: true
+        },
         {
           path: '/clients/edit/:id',
           name: 'edit-client',
@@ -390,22 +400,39 @@ export default {
     {
       name: 'missions',
       label: "Missions",
+      role: "LISTE_MISSIONS_VL",
       icon: <GiPathDistance style={{ marginRight: 10 }} />,
       routes: [
         {
-          path: '/missions/add_vl',
+          path: '/missions_vl/add',
           name: 'add-mission-vl',
           label: 'Ajouter mission VL',
           role: "AJOUTER_MISSION_VL",
           component: AddVLMission,
+        },
+				{
+          path: '/missions_vl/edit/:id',
+          name: 'edit-missions-vl',
+          label: "Modifier mission",
+          role: "MODIFIER_MISSION_VL",
+          component: EditVL,
+          hideInSide: true
         },
         {
           path: '/missions_vl',
           name: 'list-missions-vl',
           role: "LISTE_MISSIONS_VL",
           label: 'List missions VL',
-          component: ListMissionsVL,
+          component: ListVL,
           exact: true
+        },
+        {
+          path: '/missions_vl/show/:id',
+          name: 'show-missions-vl',
+         // role: "LISTE_MISSIONS_VL",
+          label: 'Show missions VL',
+          component: ShowVL,
+          hideInSide: true
         },
       ]
     },
