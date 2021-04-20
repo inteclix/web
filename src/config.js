@@ -3,7 +3,8 @@ import {
   VideoCameraOutlined,
   LaptopOutlined,
   NotificationOutlined,
-  DashboardOutlined
+  DashboardOutlined,
+	ApartmentOutlined
 } from '@ant-design/icons';
 
 import { FaCarAlt, FaBell, FaUserFriends, FaClipboardList } from "react-icons/fa";
@@ -61,6 +62,8 @@ import ListVL from 'pages/Missions/ListVL';
 import ListMiseDispositionVL from 'pages/Clients/ListMiseDispositionVL';
 import ShowVL from "pages/Missions/ShowVL"
 import EditVL from 'pages/Missions/EditVL';
+import SMIQualite from 'pages/QHSE/SMIQualite';
+import Axes from 'pages/QHSE/qualite/Axes';
 
 export default {
   appName: "GPark v1.0.0",
@@ -434,6 +437,21 @@ export default {
           component: ShowVL,
           hideInSide: true
         },
+      ]
+    },
+		{
+      name: 'smi',
+      label: "SMI",
+      role: "SMI",
+      icon: <ApartmentOutlined style={{ marginRight: 10 }} />,
+      routes: [
+        {
+          path: '/smi/qualite',
+          name: 'qualite',
+          label: 'Portail Qualité',
+          role: "SMI_QUALITE",
+          component: SMIQualite,
+        }
       ]
     },
 

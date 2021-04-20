@@ -20,7 +20,7 @@ export default () => {
   const { selectedSiderKey } = useAppStore()
   return (
     <Sider
-      width={280}
+      width={200}
       style={{
         overflow: 'auto',
         height: 'calc(100vh - 48px)',

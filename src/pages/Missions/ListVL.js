@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import { Button, Tooltip, message, Popconfirm, Select } from "antd";
+import { Button, Tooltip, message, Popconfirm, DatePicker } from "antd";
 
 import ProTable from "@ant-design/pro-table";
 import {
@@ -19,12 +19,16 @@ import { _prop } from "_consts";
 import { hasRole } from "utils";
 import ChangeState from "./components/ChangeState"
 import CalcGPS from "./components/CalcGPS"
+import { RiFileExcel2Line } from "react-icons/ri";
 
 export default function () {
 	const { api, user } = useAppStore()
 	const history = useHistory()
 	const actionRef = React.useRef()
-	window.actionRef = actionRef
+	const [date1, setDate1] = React.useState(moment().startOf('month'))
+	const [date2, setDate2] = React.useState(moment())
+
+	const [loadingDownload, setLoadingDownload] = React.useState(false)
 	const columns = [
 		{
 			title: "Matricule",
@@ -210,12 +214,63 @@ export default function () {
 						params["filterBy"] = Object.keys(filters)[0]
 						params["filter"] = Object.values(filters)
 					}
+					params["date1"] = date1 ? date1.format("yy-M-D") : moment().format("yy-M-D")
+					params["date2"] = date2 ? date2.format("yy-M-D") : moment().format("yy-M-D")
 					return api.get("/missionvls", { params }).then((res) => res.data)
 				}}
 				pagination={{
 					defaultCurrent: 1,
 					pageSize: 10
 				}}
+
+				toolBarRender={(action) => [
+					<div style={{ flex: 1, display: "flex", flexDirection: "row" }}>
+						<DatePicker
+							placeholder="date1"
+							format="DD/MM/YYYY"
+							onChange={(value) => { setDate1(value); action.reload() }}
+							value={date1}
+							style={{ width: "100%" }}
+						/>
+						<DatePicker
+							placeholder="date2"
+							format="DD/MM/YYYY"
+							onChange={(value) => { setDate2(value); action.reload() }}
+							value={date2}
+							style={{ width: "100%" }}
+						/>
+
+					</div>,
+					<div style={{ cursor: "pointer", "marginTop": 7 }} >
+						<Button
+							loading={loadingDownload}
+							type="text"
+							icon={<RiFileExcel2Line size={20} />}
+							onClick={() => {
+								const d1 = date1 ? date1.format("yy-M-D") : moment().format("yy-M-D")
+								const d2 = date2 ? date2.format("yy-M-D") : moment().format("yy-M-D")
+								setLoadingDownload(true)
+								api.get(`/missionvls?format=excel&date1=${d1}&date2=${d2}`,
+									{
+										responseType: 'blob',
+										headers: {
+											'Content-Disposition': `attachment; filename=etat_vehicules.xlsx`,
+											'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+										}
+									}
+								).then((res) => {
+									const url = window.URL.createObjectURL(new Blob([res.data]));
+									const link = document.createElement('a');
+									link.href = url;
+									link.setAttribute('download', 'etat_missions_vl_' + moment().format("DD_MM_YYYY__HH_MM") + '.xlsx');
+									document.body.appendChild(link);
+									link.click();
+									setLoadingDownload(false)
+								})
+							}}
+						/>
+					</div>
+				]}
 			/>
 		</Page>
 	);

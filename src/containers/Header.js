@@ -83,7 +83,7 @@ export default () => {
       backgroundColor: "white",
       position: 'fixed',
       zIndex: 2,
-      width: 'calc(100% - 280px)',
+      width: 'calc(100% - 200px)',
       boxShadow: "0 1px 4px rgba(0,21,41,.08)",
       display: "flex",
       justifyContent: "flex-end",

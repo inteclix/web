@@ -71,7 +71,7 @@ export default function () {
           position: "absolute",
           top: 0,
           left: 0,
-          width: 280,
+          width: 200,
           height: 48,
           backgroundColor: "white",
           padding: 5,
@@ -91,7 +91,7 @@ export default function () {
           </div>
         </div>
         <Side />
-        <Layout style={{ marginLeft: 280, overflowY: "scroll" }}>
+        <Layout style={{ marginLeft: 200, overflowY: "scroll" }}>
           <Header />
           <Content style={{ paddingTop: 48 }}>
             {renderRoutes()}
