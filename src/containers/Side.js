@@ -23,8 +23,8 @@ export default () => {
       width={200}
       style={{
         overflow: 'auto',
-        height: 'calc(100vh - 48px)',
-        marginTop: 48,
+        height: 'calc(100vh - 32px)',
+        marginTop: 32,
         position: 'fixed',
         left: 0,
         //    background: "linear-gradient(0deg, rgba(42, 32, 132, 1) 0%, rgba(48, 83, 209, 1) 37%, rgba(42, 32, 132, 1) 100%)"
@@ -41,17 +41,17 @@ export default () => {
                       r.routes.map((rr, ii) => {
                         if (rr.role) {
                           return hasRole(user, rr.role) ? (
-                            rr.hideInSide ? undefined : <Menu.Item key={"sub-m-" + ii} onClick={() => history.push(rr.path)} key={rr.name}>{rr.label}</Menu.Item>
+                            rr.hideInSide ? undefined : <Menu.Item  onClick={() => history.push(rr.path)} key={rr.name}>{rr.label}</Menu.Item>
                           ) : null
                         } else {
-                          return rr.hideInSide ? undefined : <Menu.Item key={"sub-m-" + ii} onClick={() => history.push(rr.path)} key={rr.name}>{rr.label}</Menu.Item>
+                          return rr.hideInSide ? undefined : <Menu.Item  onClick={() => history.push(rr.path)} key={rr.name}>{rr.label}</Menu.Item>
                         }
                       })
                     }
                   </SubMenu> : null
                 )
               } else {
-                return hasRole(user, r.role) ? (r.hideInSide ? undefined : <Menu.Item key={"m-" + i} onClick={() => history.push(r.path)} key={r.name} icon={r.icon}>{r.label}</Menu.Item>) : null
+                return hasRole(user, r.role) ? (r.hideInSide ? undefined : <Menu.Item onClick={() => history.push(r.path)} key={r.name} icon={r.icon}>{r.label}</Menu.Item>) : null
               }
             } else {
               if (r.routes) {
@@ -61,11 +61,11 @@ export default () => {
                       r.routes.map((rr, ii) => {
                         if (rr.role) {
                           return hasRole(user, rr.role) ? (
-                            rr.hideInSide ? undefined : <Menu.Item key={"sub-m-" + ii} onClick={() => history.push(rr.path)} key={rr.name}>{rr.label}</Menu.Item>
+                            rr.hideInSide ? undefined : <Menu.Item  onClick={() => history.push(rr.path)} key={rr.name}>{rr.label}</Menu.Item>
                           ) : null
                         } else {
                           return (
-                            rr.hideInSide ? undefined : <Menu.Item key={"sub-m-" + ii} onClick={() => history.push(rr.path)} key={rr.name}>{rr.label}</Menu.Item>
+                            rr.hideInSide ? undefined : <Menu.Item  onClick={() => history.push(rr.path)} key={rr.name}>{rr.label}</Menu.Item>
                           )
                         }
                       })
@@ -73,7 +73,7 @@ export default () => {
                   </SubMenu>
                 )
               } else {
-                return r.hideInSide ? undefined : <Menu.Item key={"m-" + i} onClick={() => history.push(r.path)} key={r.name} icon={r.icon}>{r.label}</Menu.Item>
+                return r.hideInSide ? undefined : <Menu.Item  onClick={() => history.push(r.path)} key={r.name} icon={r.icon}>{r.label}</Menu.Item>
               }
             }
           })

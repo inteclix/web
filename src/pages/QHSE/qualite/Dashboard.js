@@ -10,67 +10,62 @@ import {
 	Card,
 	Row,
 	Col,
-	Spin
+	Spin,
+	Typography,
+	Collapse
 } from "antd"
 
 import {
 	ArrowUpOutlined,
 	ArrowDownOutlined
 } from "@ant-design/icons"
+import IndicateursvChart from "./components/IndicateursvChart";
+import GaugeIndicateur from "./components/GaugeIndicateur";
+import Page from "components/Page";
 
-const Indicateur = ({ i }) => {
+const { Panel } = Collapse;
+
+const Indicateur = ({ indicateur }) => {
 	const { api, user } = useAppStore()
 	const [loading, setLoading] = React.useState(true)
 	const [valeurs, setValeurs] = React.useState([])
 
 	React.useEffect(() => {
 		setLoading(true)
-		api.get("smi_indicateurs/" + i.id)
+		api.get("smi_indicateurs/" + indicateur.id)
 			.then((res) => {
-				setValeurs(res.data.data.valeurs)
+				setValeurs(res?.data?.data?.data)
+				//console.log(res.data.data.data)
 				setLoading(false)
 			})
-	}, [])
+	}, [indicateur])
 
-	let lastValeur = "-"
-	if (valeurs?.length !== 0) {
-		lastValeur = valeurs[valeurs?.length - 1].valeur
+	let lastValeur = null
+	if (valeurs?.length >= 1) {
+		lastValeur = valeurs[valeurs?.length - 1]
+	}
+	let beforeLastValeur = null
+	if (valeurs?.length >= 2) {
+		beforeLastValeur = valeurs[valeurs?.length - 2]
 	}
 
 	return (
-		<Col span={6}>
-			<Card>
-				{
-					!loading &&
-					<Statistic
-						title={i.name.toUpperCase()}
-						value={lastValeur}
-						valueStyle={{ color: lastValeur > i.seuil ? '#3f8600' : "red" }}
-						prefix={lastValeur > i.seuil ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
-						suffix={`/ ${i.seuil}`}
-					/>
-				}
-				{
-					loading && <Spin />
-				}
-			</Card>
-		</Col>
+		<Page >
+			<GaugeIndicateur loading={loading} beforeLastValeur={beforeLastValeur} lastValeur={lastValeur} indicateur={indicateur} />
+		</Page>
 	)
 }
 
 const Processu = ({ p }) => {
 	return (
-		<div>
-			<Divider plain><b>{p?.slog}</b> | {p?.name}</Divider>
-			<Row gutter={18}>
+		<Row gutter={18}>
 
-				{
-					p?.indicateurs?.map((i) => (
-						<Indicateur i={i} />
-					))
-				}
-			</Row>
-		</div>
+			{
+				p?.indicateurs?.map((i) => (
+					<Indicateur indicateur={i} />
+				))
+			}
+		</Row>
 	)
 }
 
@@ -85,6 +80,19 @@ export default () => {
 			})
 	}, [])
 
+	return (
+		<Page title="Tableau de board QHSE" >
+			<Collapse defaultActiveKey={['0']}>
+				{
+					processus.map((p, index) => (
+						<Panel header={p.name} key={index} extra={<div><b>{p.indicateurs.length}</b> INDICATEURS</div>}>
+							<Processu p={p} />
+						</Panel>
+					))
+				}
+			</Collapse>
+		</Page>
+	)
 	return (
 		<div>
 			{

@@ -1,4 +1,8 @@
+@import '~antd/dist/antd.dark.css';
+@import '~antd/dist/antd.compact.css';
+
 /* custom scrollbar */
+
 ::-webkit-scrollbar {
   width: 15px;
 }

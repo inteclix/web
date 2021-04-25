@@ -9,65 +9,68 @@ export const formItems = [
   },
   {
     name: "prop",
-    label: "prop",
+    label: "Propriétaire",
     rules: [{ required: true, message: _messages.required }],
-    type: "select",
-    selects: _prop,
+    type: "text",
   },
   {
     name: "old_matricule",
-    label: "old_matricule",
+    label: "Ancien matricule",
     rules: [{ required: true, message: _messages.required }],
     type: "text",
   },
   {
     name: "code_gps",
-    label: "code_gps",
+    label: "code GPS",
     rules: [{ required: true, message: _messages.required }],
     type: "text",
   },
   {
     name: "genre",
-    label: "genre",
+    label: "Genre",
     rules: [{ required: true, message: _messages.required }],
     type: "select",
-    selects: _carGenre
+		selects: _carGenre
   },
   {
     name: "marque",
-    label: "marque",
+    label: "Marque",
     rules: [{ required: true, message: _messages.required }],
-    type: "select",
-    selects: _marque
+    type: "text",
   },
   {
     name: "type",
-    label: "type",
+    label: "Type",
     rules: [{ required: true, message: _messages.required }],
     type: "text",
   },
   {
     name: "puissance",
-    label: "puissance",
+    label: "Puissance",
     rules: [{ required: true, message: _messages.required }],
     type: "text",
   },
   {
     name: "energie",
-    label: "energie",
+    label: "Energie",
     rules: [{ required: true, message: _messages.required }],
     type: "text",
   },
   {
     name: "carrosserie",
-    label: "carrosserie",
+    label: "Carrosserie",
     rules: [{ required: true, message: _messages.required }],
     type: "text",
   },
   {
     name: "color",
-    label: "color",
+    label: "Color",
     type: "text",
+  },
+	{
+    name: "nb_places",
+    label: "Nombre de places",
+    type: "integer",
   },
 
 ]

@@ -146,7 +146,7 @@ const non_conformites = {
 		"Incident / Accident",
 		"Inspection"
 	],
-	"objectis_operationnel": [],
+	//"objectis_operationnel": [],
 	"concerné": "concerné",
 	"Processus": [],
 	"Intitulé de l'évènement indésirable": "Intitulé de l'évènement indésirable",

@@ -63,7 +63,7 @@ export default () => {
 				}}
 				pagination={{
 					defaultCurrent: 1,
-					pageSize: 10
+					pageSize: 5
 				}}
 			/>
 		</Page>

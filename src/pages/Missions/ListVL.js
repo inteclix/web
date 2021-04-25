@@ -76,13 +76,10 @@ export default function () {
 		},
 		{
 			title: "Destinations",
-			dataIndex: "driver1s_fullname",
+			dataIndex: "destinations",
 			copyable: true,
 			sorter: true,
 			hideInSearch: true,
-			render: (text, row, index, action) => {
-				return row.destinations_wilaya_name
-			}
 		},
 		{
 			title: "Date départ",

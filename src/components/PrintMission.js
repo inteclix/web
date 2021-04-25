@@ -125,7 +125,7 @@ export default class PrintMission extends React.Component {
 									<b>N° Demande(commande):</b> {mission.numero ? mission.numero : "/"}
 								</li>
 								<li>
-									<b>Destination:</b> <u style={{ fontSize: "6mm" }}>{mission.destination.wilaya_name}</u>
+									<b>Destination:</b> <u style={{ fontSize: "6mm" }}>{mission.destinations}</u>
 								</li>
 								<li>
 									<b>Client:</b> <u>{mission.client.designation}</u>

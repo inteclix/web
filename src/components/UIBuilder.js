@@ -7,7 +7,7 @@ import {
 	Select,
 	DatePicker,
 	Rate,
-	InputNumber
+	Switch
 } from "antd";
 import { values } from "lodash";
 
@@ -210,6 +210,18 @@ export const FormBuilder = ({
 					return (
 						<Item name={item.name} valuePropName="checked">
 							<Checkbox> {item.label} </Checkbox>
+						</Item>
+					);
+				}
+				if (item.type === "boolean") {
+					return (
+						<Item name={item.name} >
+							<Switch
+								checkedChildren={item.checkedChildren}
+								unCheckedChildren={item.unCheckedChildren}
+								defaultChecked >
+									{item.label}
+								</Switch>
 						</Item>
 					);
 				}

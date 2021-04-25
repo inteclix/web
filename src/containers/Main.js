@@ -72,7 +72,7 @@ export default function () {
           top: 0,
           left: 0,
           width: 200,
-          height: 48,
+          height: 32,
           backgroundColor: "white",
           padding: 5,
           textAlign: "center",
@@ -93,7 +93,7 @@ export default function () {
         <Side />
         <Layout style={{ marginLeft: 200, overflowY: "scroll" }}>
           <Header />
-          <Content style={{ paddingTop: 48 }}>
+          <Content style={{ paddingTop: 32 }}>
             {renderRoutes()}
           </Content>
         </Layout>

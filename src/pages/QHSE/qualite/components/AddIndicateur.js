@@ -30,6 +30,7 @@ export default ({ reload }) => {
 	}, [visible])
 
 	const add = (dataForm) => {
+		dataForm["type"] = dataForm["type"] ? 1 : 0
 		api.post("/smi_indicateurs", dataForm).then((res) => { message.info("Bien ajouter"); onClose(); reload() })
 		//console.log(dataForm)
 	}
@@ -97,6 +98,14 @@ export default ({ reload }) => {
 								rules: [{ required: true, message: _messages.required }],
 							},
 							{
+								name: "type",
+								label: "intra processus",
+								type: "boolean",
+								unCheckedChildren: "Intérieur de processus",
+								checkedChildren: "Extérieur de processus",
+								rules: [{ required: true, message: _messages.required }],
+							},
+							{
 								name: "mesure",
 								label: "Mesure",
 								type: "select",
@@ -117,13 +126,12 @@ export default ({ reload }) => {
 							},
 							{
 								name: "indicateur_sueil",
-								label: "Indicateur (Critère de performance) ",
+								label: "Sens indicateur (Critère de performance) ",
 								type: "select",
 								selects: [
-									{ label: "Min", value: "Min" },
-									{ label: "Max", value: "Max" },
-									{ label: "Valeur à attendre", value: "attendre" },
-									{ label: "Plage de valeurs", value: "plage" },
+									{ label: ">", value: ">" },
+									{ label: "=", value: "=" },
+									{ label: "<", value: "<" },
 								],
 								rules: [{ required: true, message: _messages.required }],
 							},
@@ -140,7 +148,7 @@ export default ({ reload }) => {
 								type: "select",
 								selects: [
 									{ label: "Journalier", value: "day" },
-									{ label: "Hebdomadaire", value: "week" },
+									//								{ label: "Hebdomadaire", value: "week" },
 									{ label: "Mensuel", value: "month" },
 									{ label: "Trimestriel", value: "quarter" },
 									{ label: "Annuel", value: "year" },

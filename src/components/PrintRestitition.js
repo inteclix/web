@@ -446,19 +446,13 @@ export default class PrintDecharge extends React.Component {
   }
 }
 
-const Document = ({ checklist, name, title }) => {
-  if (checklist[name]) {
-    return (
-      <div style={{ margin: "2mm" }}>
-        <input
-          style={{ marginRight: "2mm" }}
-          checked={checklist[name]}
-          type="checkbox"
-        />
-        <b>{title}</b>
-      </div>
-    );
-  } else {
-    return <></>;
-  }
-};
+const Document = ({ checklist, name, title }) => (
+	<div style={{ margin: "2mm" }}>
+		<input
+			style={{ marginRight: "2mm" }}
+			checked={checklist[name] == true}
+			type="checkbox"
+		/>
+		<b>{title}</b>
+	</div>
+)

@@ -9,6 +9,8 @@ import Processus from "./qualite/Processus";
 import Indicateurs from "./qualite/Indicateurs";
 import { _hasRole } from "utils";
 import Dashboard from "./qualite/Dashboard";
+import IndicateursHistory from "./qualite/IndicateursHistory";
+import NonConformite from "./qualite/NonConformite";
 const { SubMenu } = Menu;
 
 export default () => {
@@ -27,7 +29,7 @@ export default () => {
 
 				style={{
 					position: 'fixed',
-					zIndex: 2,
+					zIndex: 10,
 					width: '100%',
 					boxShadow: "0 1px 4px rgba(0,21,41,.08)",
 				}}
@@ -42,11 +44,10 @@ export default () => {
 						<Menu.Item key="processus">Liste des processus</Menu.Item>
 					}
 					{_hasRole("SMI_OBJECTIFS_OP") && <Menu.Item key="objectifs_operationnel">List des objectifs opérationnels</Menu.Item>}
-					{_hasRole("SMI_INDICATEURS") && <Menu.Item key="indicateurs">Liste des indicateurs</Menu.Item>}
 				</SubMenu>
 				<SubMenu key="pilotage" title="Pilotage">
 					{_hasRole("SMI_DASHBOARD") && <Menu.Item key="dashboard">Tableau de bord</Menu.Item>}
-					<Menu.Item key="veille">Veille</Menu.Item>
+					{_hasRole("SMI_INDICATEURS") && <Menu.Item key="indicateurs">Liste des indicateurs</Menu.Item>}
 				</SubMenu>
 				<SubMenu key="amelioration" title="Amélioration">
 					<Menu.Item key="actions_amelioration">Actions d'amelioration</Menu.Item>
@@ -58,7 +59,7 @@ export default () => {
 					<Menu.Item key="base_connaissance">Base de connaissance</Menu.Item>
 				</SubMenu>
 			</Menu>
-			<div style={{paddingTop :50}}>
+			<div style={{ paddingTop: 50 }}>
 				<Route path="/smi/qualite/axes_strategiques" >
 					<Axes />
 				</Route>
@@ -68,11 +69,22 @@ export default () => {
 				<Route path="/smi/qualite/processus" >
 					<Processus />
 				</Route>
-				<Route path="/smi/qualite/indicateurs" >
+				<Route exact path="/smi/qualite/indicateurs" >
 					<Indicateurs />
+				</Route>
+				<Route exact path="/smi/qualite/indicateurs/:id" >
+					<IndicateursHistory />
 				</Route>
 				<Route path="/smi/qualite/dashboard" >
 					<Dashboard />
+				</Route>
+
+				{
+					//Non Conformité
+				}
+
+				<Route exact path="/smi/qualite/non_conformites" >
+					<NonConformite />
 				</Route>
 			</div>
 		</>

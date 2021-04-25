@@ -68,13 +68,10 @@ export default function () {
 						mapOptionToString: c => c?.wilaya_name + " - " + c?.daira_name + " - " + c?.commune_name
 					},
 					{
-						name: "destination_id",
+						name: "destinations",
 						label: "Destination",
-						type: "search",
-						url: "cities/search",
+						type: "text",
 						rules: [{ required: true, message: _messages.required }],
-						defaultOptionName: "destination",
-						mapOptionToString: c => c?.wilaya_name + " - " + c?.daira_name + " - " + c?.commune_name
 					},
 					{
 						name: "driver1_id",
