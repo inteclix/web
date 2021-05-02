@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import { Button, Tooltip, message, Popconfirm, Select, Tag } from "antd";
+import { Button, Tooltip, message, Popconfirm, Select, Tag, Progress } from "antd";
 
 import ProTable from "@ant-design/pro-table";
 import {
@@ -10,7 +10,8 @@ import {
 	DeleteOutlined,
 	HistoryOutlined,
 	EditOutlined,
-	PlusOutlined
+	PlusOutlined,
+	InfoOutlined
 } from '@ant-design/icons';
 import { FaUserEdit, FaCheck, FaPaintBrush, FaInfo } from 'react-icons/fa';
 
@@ -24,6 +25,9 @@ import AddIndicateur from "./components/AddIndicateur";
 import AddIndicateurv from "./components/AddIndicateurv";
 import HistoryIndicateurv from "./components/HistoryIndicateurv";
 import { indicateurCastDate, indicateurCastTypeDate } from "utils"
+import AddNonConformite from "./components/AddNonConformite";
+import EditNonConformite from "./components/EditNonConformite";
+import NonConformiteInfo from "./components/NonConformiteInfo";
 const months = [
 	"JAN",
 	"FEV",
@@ -45,11 +49,45 @@ export default () => {
 	const actionRef = React.useRef()
 	const columns = [
 		{
+			title: "ID",
+			dataIndex: "id",
+			hideInSearch: true,
+			sorter: true,
+		},
+		{
 			title: "intitulé",
 			dataIndex: "name",
 			copyable: true,
 			hideInSearch: false,
 			sorter: true,
+		},
+		{
+			title: "Nature de la non-conformité",
+			dataIndex: "nature",
+			copyable: true,
+			hideInSearch: true,
+		},
+		{
+			title: "Libellé de la nature",
+			dataIndex: "nature_label",
+			copyable: true,
+			hideInSearch: true
+		},
+
+		{
+			title: "description",
+			dataIndex: "Description",
+			sorter: true,
+			hideInSearch: true,
+			render: (text, row, index, action) => {
+				return row?.objectif?.name
+			}
+		},
+		{
+			title: "Date non-conformité",
+			dataIndex: "date",
+			sorter: true,
+			hideInSearch: true,
 		},
 		{
 			title: "Processus",
@@ -61,83 +99,43 @@ export default () => {
 			}
 		},
 		{
-			title: "Objectif",
-			dataIndex: "objectif",
-			sorter: true,
+			title: "Avancement",
+			dataIndex: "avancement",
 			hideInSearch: true,
 			render: (text, row, index, action) => {
-				return row?.objectif?.name
+				return <Progress steps={5} percent={row?.avancement} />
 			}
 		},
 		{
-			title: "Fréquence",
-			dataIndex: "frequence",
-			hideInSearch: true,
-			render: (text, row, index, action) => {
-				return indicateurCastTypeDate(row.frequence)
-			}
-			
-		},
-		{
-			title: "Date",
-			dataIndex: "date",
+			title: "Cree par",
+			dataIndex: "createdby",
 			sorter: true,
 			hideInSearch: true,
 			render: (text, row, index, action) => {
-				if (row.valeurs?.length !== 0) {
-					return indicateurCastDate(row?.valeurs[row.valeurs?.length - 1].date)
-				} else {
-					return "-"
-				}
+				return row?.createdby?.username
 			}
 		},
-		{
-			title: "Valeur",
-			dataIndex: "valeur",
-			sorter: true,
-			hideInSearch: true,
-			render: (text, row, index, action) => {
-				if (row.valeurs?.length !== 0) {
-					return row?.valeurs[row.valeurs?.length - 1].valeur + " " + row?.mesure
-				} else {
-					return "-"
-				}
-			}
-		},
-		{
-			title: "Critère de performance",
-			dataIndex: "seuil",
-			sorter: true,
-			hideInSearch: true,
-			render: (text, row, index, action) => {
-				return row?.indicateur_sueil + " à " + row?.seuil + " " + row?.mesure
-			}
-		},
+
+
 		{
 			title: "option",
 			valueType: "option",
 			dataIndex: "id",
 			render: (text, row, index, action) => [
-
+				<NonConformiteInfo nonconformite={row} ><Button shape="circle" icon={<InfoOutlined />} /></NonConformiteInfo>,
 				<>
 					{
-						hasRole(user, "AJOUTER_VALEUR_INDICATEUR") &&
-						<AddIndicateurv reload={() => action.reload()} title={row.name} frequence={row.frequence} indicateur_id={row.id} />
+						hasRole(user, "EDIT_NON_CONFORMITE") &&
+						<EditNonConformite reload={() => action.reload()} title={row.name} frequence={row.frequence} indicateur_id={row.id} row={row} />
 					}
 				</>,
-				//<HistoryIndicateurv reload={() => action.reload()} mesure={row?.mesure} indicateur_id={row.id} valeurs={row?.valeurs} title={"Historique des valeurs"} />,
-				<Tooltip title="Historique des valeurs">
-					<Button
-						onClick={() => history.push("/smi/qualite/indicateurs/" + row.id)}
-						shape="circle" icon={<HistoryOutlined />} />
-				</Tooltip>,
 				<>
 					{
 						hasRole(user, "SUPPRIMER_INDICATEUR") &&
 						<Popconfirm
 							title="Êtes-vous sûr de vouloir supprimer?"
 							onConfirm={() => {
-								api.post("/smi_indicateurs/delete/" + row.id).then(() => { message.info("Bien Supprimé"); action.reload(); })
+								api.post("/smi_conformites/delete/" + row.id).then(() => { message.info("Bien Supprimé"); action.reload(); })
 							}}
 							onCancel={() => { }}
 							okText="Oui"
@@ -154,11 +152,11 @@ export default () => {
 		}
 	];
 	return (
-		<Page title="Liste des indicateurs">
+		<Page title="Liste des non-conformités">
 			<div style={{ marginBottom: 15 }}>
 				{
 					hasRole(user, "AJOUTER_INDICATEUR") &&
-					<AddIndicateur reload={() => actionRef.current.reload()} />
+					<AddNonConformite reload={() => actionRef.current.reload()} />
 				}
 			</div>
 			<ProTable
@@ -176,7 +174,7 @@ export default () => {
 						params["filterBy"] = Object.keys(filters)[0]
 						params["filter"] = Object.values(filters)
 					}
-					return api.get("/smi_indicateurs", { params }).then((res) => res.data)
+					return api.get("/smi_conformites", { params }).then((res) => res.data)
 				}}
 				pagination={{
 					defaultCurrent: 1,

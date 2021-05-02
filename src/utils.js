@@ -66,7 +66,7 @@ export const indicateurCastTypeDate = (type) => {
 		return "Hebdomadaire"
 	}
 	if (type == "month") {
-		return "Mensuel"
+		return "Mensuelle"
 	}
 	if (type == "quarter") {
 		return "Trimestriel"
@@ -75,4 +75,16 @@ export const indicateurCastTypeDate = (type) => {
 		return "Annuel"
 	}
 	return ""
+}
+
+export const getIndicateurEcart = (row) => {
+	if (row.valeurs?.length !== 0) {
+		if (row.indicateur_sueil == ">") {
+			return row?.valeurs[row.valeurs?.length - 1].valeur - row?.seuil
+		} else {
+			return row?.seuil - row?.valeurs[row.valeurs?.length - 1].valeur
+		}
+	} else {
+		return null
+	}
 }

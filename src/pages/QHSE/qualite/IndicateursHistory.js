@@ -87,7 +87,7 @@ export default () => {
 
 
 	return (
-		<Page withBack={true} title={"Historiques"} >
+		<Page withBack={true} title={"Historique des valeurs"} >
 			{data &&
 				<div style={{ height: 120 }}>
 					<IndicateursvChart valeurs={data} />

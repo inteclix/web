@@ -53,7 +53,7 @@ export default () => {
 					formItems={[
 						{
 							name: "name",
-							label: "intitulée",
+							label: "intitulé",
 							type: "textarea",
 						},
 						{

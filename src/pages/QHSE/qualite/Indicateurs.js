@@ -10,7 +10,10 @@ import {
 	DeleteOutlined,
 	HistoryOutlined,
 	EditOutlined,
-	PlusOutlined
+	PlusOutlined,
+	InfoOutlined,
+	CheckCircleTwoTone,
+	CloseCircleTwoTone
 } from '@ant-design/icons';
 import { FaUserEdit, FaCheck, FaPaintBrush, FaInfo } from 'react-icons/fa';
 
@@ -18,12 +21,14 @@ import Page from "components/Page";
 import { useAppStore } from "stores";
 import { useHistory } from "react-router-dom";
 import { _prop } from "_consts";
-import { hasRole } from "utils";
+import { hasRole, getIndicateurEcart } from "utils";
 import AddObjetif from "./components/AddObjetif";
 import AddIndicateur from "./components/AddIndicateur";
 import AddIndicateurv from "./components/AddIndicateurv";
 import HistoryIndicateurv from "./components/HistoryIndicateurv";
 import { indicateurCastDate, indicateurCastTypeDate } from "utils"
+import IndicateurInfo from "./components/IndicateurInfo";
+import AddNonConformite from "./components/AddNonConformite";
 const months = [
 	"JAN",
 	"FEV",
@@ -45,13 +50,6 @@ export default () => {
 	const actionRef = React.useRef()
 	const columns = [
 		{
-			title: "intitulé",
-			dataIndex: "name",
-			copyable: true,
-			hideInSearch: false,
-			sorter: true,
-		},
-		{
 			title: "Processus",
 			dataIndex: "processus",
 			sorter: true,
@@ -70,29 +68,32 @@ export default () => {
 			}
 		},
 		{
+			title: "Indicateur",
+			dataIndex: "name",
+			copyable: true,
+			hideInSearch: false,
+			sorter: true,
+		},
+		{
+			title: "Critère de performance",
+			dataIndex: "seuil",
+			sorter: true,
+			hideInSearch: true,
+			render: (text, row, index, action) => {
+				return row?.indicateur_sueil + " à " + row?.seuil + " " + row?.mesure
+			}
+		},
+		{
 			title: "Fréquence",
 			dataIndex: "frequence",
 			hideInSearch: true,
 			render: (text, row, index, action) => {
 				return indicateurCastTypeDate(row.frequence)
 			}
-			
+
 		},
 		{
-			title: "Date",
-			dataIndex: "date",
-			sorter: true,
-			hideInSearch: true,
-			render: (text, row, index, action) => {
-				if (row.valeurs?.length !== 0) {
-					return indicateurCastDate(row?.valeurs[row.valeurs?.length - 1].date)
-				} else {
-					return "-"
-				}
-			}
-		},
-		{
-			title: "Valeur",
+			title: "Résultat",
 			dataIndex: "valeur",
 			sorter: true,
 			hideInSearch: true,
@@ -105,12 +106,41 @@ export default () => {
 			}
 		},
 		{
-			title: "Critère de performance",
-			dataIndex: "seuil",
+			title: "Ecart",
+			dataIndex: "valeur",
 			sorter: true,
 			hideInSearch: true,
 			render: (text, row, index, action) => {
-				return row?.indicateur_sueil + " à " + row?.seuil + " " + row?.mesure
+				const ecart = getIndicateurEcart(row);
+				if (!ecart) {
+					return "Acucun valeur"
+				}
+				if (ecart > 0) {
+					return (
+						<Button type="text" block={true} title={ecart} icon={<CheckCircleTwoTone twoToneColor="#52c41a" />} >{" " + ecart}</Button>
+					)
+				} else {
+					return (
+						<AddNonConformite
+							indicateurv_id={1}
+							reload={() => { }}
+							addButton={(onClick) => (<Button onClick={onClick} type="text" block={true} title={ecart} icon={<CloseCircleTwoTone twoToneColor="#ff5722" />} >{" " + ecart}</Button>)} />
+					)
+				}
+			}
+		},
+
+		{
+			title: "Date de la valeur",
+			dataIndex: "date",
+			sorter: true,
+			hideInSearch: true,
+			render: (text, row, index, action) => {
+				if (row.valeurs?.length !== 0) {
+					return indicateurCastDate(row?.valeurs[row.valeurs?.length - 1].date)
+				} else {
+					return "-"
+				}
 			}
 		},
 		{
@@ -118,7 +148,7 @@ export default () => {
 			valueType: "option",
 			dataIndex: "id",
 			render: (text, row, index, action) => [
-
+				<IndicateurInfo indicateur={row} ><Button shape="circle" icon={<InfoOutlined />} /></IndicateurInfo>,
 				<>
 					{
 						hasRole(user, "AJOUTER_VALEUR_INDICATEUR") &&
@@ -154,7 +184,7 @@ export default () => {
 		}
 	];
 	return (
-		<Page title="Liste des indicateurs">
+		<Page title="Objectifs & indicateurs">
 			<div style={{ marginBottom: 15 }}>
 				{
 					hasRole(user, "AJOUTER_INDICATEUR") &&

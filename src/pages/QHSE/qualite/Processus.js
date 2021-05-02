@@ -29,7 +29,7 @@ export default () => {
 			dataIndex: "id",
 		},
 		{
-			title: "intitulée",
+			title: "intitulé",
 			dataIndex: "name",
 			copyable: true,
 			sorter: true,

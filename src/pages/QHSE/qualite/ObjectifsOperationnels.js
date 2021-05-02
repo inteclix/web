@@ -27,7 +27,7 @@ export default () => {
 
 	const columns = [
 		{
-			title: "intitulée",
+			title: "intitulé",
 			dataIndex: "name",
 			copyable: true,
 			hideInSearch: false,

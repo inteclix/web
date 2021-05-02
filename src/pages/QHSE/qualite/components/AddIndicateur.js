@@ -31,13 +31,14 @@ export default ({ reload }) => {
 
 	const add = (dataForm) => {
 		dataForm["type"] = dataForm["type"] ? 1 : 0
+		dataForm["domaine"] = "qualite"
 		api.post("/smi_indicateurs", dataForm).then((res) => { message.info("Bien ajouter"); onClose(); reload() })
 		//console.log(dataForm)
 	}
 	return (
 		<>
 			<Tooltip title="Nouvel élément">
-				<Button onClick={showDrawer} icon={<PlusOutlined />}>Nouvel élément</Button>
+				<Button onClick={showDrawer} icon={<PlusOutlined />}>Ajouter</Button>
 			</Tooltip>
 			{
 				visible &&
@@ -56,7 +57,7 @@ export default ({ reload }) => {
 						formItems={[
 							{
 								name: "name",
-								label: "intitulée",
+								label: "intitulé",
 								type: "textarea",
 							},
 							{
@@ -83,7 +84,7 @@ export default ({ reload }) => {
 							{
 								name: "domaine",
 								label: "Domaine",
-								type: "select",
+								type: "selectmultipless",
 								selects: [
 									{ label: "Qualité", value: "qualite" },
 									{ label: "Environnement", value: "environnement" },
@@ -101,13 +102,13 @@ export default ({ reload }) => {
 								name: "type",
 								label: "intra processus",
 								type: "boolean",
-								unCheckedChildren: "Intérieur de processus",
-								checkedChildren: "Extérieur de processus",
+								unCheckedChildren: "Intra processus",
+								checkedChildren: "Exta processus",
 								rules: [{ required: true, message: _messages.required }],
 							},
 							{
 								name: "mesure",
-								label: "Mesure",
+								label: "Unité de mesure",
 								type: "select",
 								selects: [
 									{ label: "Heures", value: "heures" },
@@ -126,7 +127,7 @@ export default ({ reload }) => {
 							},
 							{
 								name: "indicateur_sueil",
-								label: "Sens indicateur (Critère de performance) ",
+								label: "Sens indicateur / Critère de performance ",
 								type: "select",
 								selects: [
 									{ label: ">", value: ">" },
@@ -149,7 +150,7 @@ export default ({ reload }) => {
 								selects: [
 									{ label: "Journalier", value: "day" },
 									//								{ label: "Hebdomadaire", value: "week" },
-									{ label: "Mensuel", value: "month" },
+									{ label: "Mensuelle", value: "month" },
 									{ label: "Trimestriel", value: "quarter" },
 									{ label: "Annuel", value: "year" },
 								],
