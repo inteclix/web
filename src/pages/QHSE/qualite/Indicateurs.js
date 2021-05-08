@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import { Button, Tooltip, message, Popconfirm, Select, Tag } from "antd";
+import { Button, Tooltip, message, Popconfirm, Select, Form } from "antd";
 
 import ProTable from "@ant-design/pro-table";
 import {
@@ -26,7 +26,7 @@ import AddObjetif from "./components/AddObjetif";
 import AddIndicateur from "./components/AddIndicateur";
 import AddIndicateurv from "./components/AddIndicateurv";
 import HistoryIndicateurv from "./components/HistoryIndicateurv";
-import { indicateurCastDate, indicateurCastTypeDate } from "utils"
+import { indicateurCastDate, indicateurCastTypeDate, listProcessus } from "utils"
 import IndicateurInfo from "./components/IndicateurInfo";
 import AddNonConformite from "./components/AddNonConformite";
 const months = [
@@ -43,21 +43,15 @@ const months = [
 	"NOV",
 	"DEC"
 ]
-
+const Item = Form.Item
 export default () => {
 	const { api, user } = useAppStore()
 	const history = useHistory()
 	const actionRef = React.useRef()
+	const [processusId, setProcessusId] = React.useState(
+		Number.parseInt(localStorage.getItem("processu_id")) ? Number.parseInt(localStorage.getItem("processu_id")) : 1
+	)
 	const columns = [
-		{
-			title: "Processus",
-			dataIndex: "processus",
-			sorter: true,
-			hideInSearch: true,
-			render: (text, row, index, action) => {
-				return row?.processu?.slog
-			}
-		},
 		{
 			title: "Objectif",
 			dataIndex: "objectif",
@@ -70,7 +64,7 @@ export default () => {
 		{
 			title: "Indicateur",
 			dataIndex: "name",
-			copyable: true,
+			copyable: false,
 			hideInSearch: false,
 			sorter: true,
 		},
@@ -80,7 +74,7 @@ export default () => {
 			sorter: true,
 			hideInSearch: true,
 			render: (text, row, index, action) => {
-				return row?.indicateur_sueil + " à " + row?.seuil + " " + row?.mesure
+				return `${row?.indicateur_sueil} à ${row?.seuil} ${row?.mesure == "nombre" ? "" : row?.mesure}`
 			}
 		},
 		{
@@ -99,39 +93,14 @@ export default () => {
 			hideInSearch: true,
 			render: (text, row, index, action) => {
 				if (row.valeurs?.length !== 0) {
-					return row?.valeurs[row.valeurs?.length - 1].valeur + " " + row?.mesure
+					return `${row?.valeurs[row.valeurs?.length - 1].valeur} ${row?.mesure == "nombre" ? "" : row?.mesure}`
 				} else {
 					return "-"
 				}
 			}
 		},
 		{
-			title: "Ecart",
-			dataIndex: "valeur",
-			sorter: true,
-			hideInSearch: true,
-			render: (text, row, index, action) => {
-				const ecart = getIndicateurEcart(row);
-				if (!ecart) {
-					return "Acucun valeur"
-				}
-				if (ecart > 0) {
-					return (
-						<Button type="text" block={true} title={ecart} icon={<CheckCircleTwoTone twoToneColor="#52c41a" />} >{" " + ecart}</Button>
-					)
-				} else {
-					return (
-						<AddNonConformite
-							indicateurv_id={1}
-							reload={() => { }}
-							addButton={(onClick) => (<Button onClick={onClick} type="text" block={true} title={ecart} icon={<CloseCircleTwoTone twoToneColor="#ff5722" />} >{" " + ecart}</Button>)} />
-					)
-				}
-			}
-		},
-
-		{
-			title: "Date de la valeur",
+			title: "Date valeur",
 			dataIndex: "date",
 			sorter: true,
 			hideInSearch: true,
@@ -143,6 +112,33 @@ export default () => {
 				}
 			}
 		},
+		{
+			title: "Ecart",
+			dataIndex: "valeur",
+			sorter: true,
+			hideInSearch: true,
+			render: (text, row, index, action) => {
+				let ecart = getIndicateurEcart(row);
+				if (ecart == null) {
+					return "Acucun valeur"
+				}
+				ecart = ecart.toFixed(2)
+				if (ecart >= 0) {
+					return (
+						<Button type="text" block={true} title={ecart} icon={<CheckCircleTwoTone twoToneColor="#52c41a" />} >{" " + ecart}</Button>
+					)
+				} else {
+					return (
+						<AddNonConformite
+							indicateurv_id={row?.valeurs[row.valeurs?.length - 1].id}
+							reload={() => { }}
+							addButton={(onClick) => (<Button onClick={onClick} type="text" block={true} title={ecart} icon={<CloseCircleTwoTone twoToneColor="#ff5722" />} >{" " + ecart}</Button>)} />
+					)
+				}
+			}
+		},
+
+
 		{
 			title: "option",
 			valueType: "option",
@@ -183,8 +179,11 @@ export default () => {
 			]
 		}
 	];
+
+
+
 	return (
-		<Page title="Objectifs & indicateurs">
+		<Page title="Indicateurs & valeurs">
 			<div style={{ marginBottom: 15 }}>
 				{
 					hasRole(user, "AJOUTER_INDICATEUR") &&
@@ -206,12 +205,28 @@ export default () => {
 						params["filterBy"] = Object.keys(filters)[0]
 						params["filter"] = Object.values(filters)
 					}
+					params["processu_id"] = processusId
 					return api.get("/smi_indicateurs", { params }).then((res) => res.data)
 				}}
 				pagination={{
 					defaultCurrent: 1,
 					pageSize: 5
 				}}
+				toolBarRender={(action) => [
+					<div >
+						<Item label="Processus" >
+							<Select defaultValue={processusId} style={{ width: 220 }} onChange={(value) => {
+								setProcessusId(value);
+								localStorage.setItem("processu_id", value);
+								action.reload()
+							}}>
+								{listProcessus.map(p => (
+									<Select.Option value={p.id}>{p.value}</Select.Option>
+								))}
+							</Select>
+						</Item>
+					</div>
+				]}
 			/>
 		</Page>
 	)

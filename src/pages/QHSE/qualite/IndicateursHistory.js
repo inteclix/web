@@ -13,17 +13,47 @@ import {
 	DeleteOutlined,
 	HistoryOutlined,
 	EditOutlined,
-	PlusOutlined
+	PlusOutlined,
+	CloseOutlined
 } from '@ant-design/icons';
 import { Button, Tooltip, message, Popconfirm, Select, Tag } from "antd";
 
 import Page from "components/Page"
 
 import { useAppStore } from "stores"
-import { Spin } from "antd"
+import { Spin, Input } from "antd"
 
-import IndicateursvChart from "./components/IndicateursvChart"
+import IndicateurValeursChart from "./components/IndicateurValeursChart"
 import { indicateurCastDate, indicateurCastTypeDate, hasRole } from "utils"
+
+const ChangeValuerIndicateur = ({ row, onSuccess }) => {
+	const [isEdit, setIsEdit] = React.useState(false)
+	const [value, setValue] = React.useState(row.valeur)
+	const { api } = useAppStore()
+	if (isEdit) {
+		return (
+			<Input
+				style={{ width: "auto" }}
+				type="number"
+				onChange={e => setValue(e.target.value)}
+				value={value}
+				onPressEnter={() => {
+					api.post("/smi_indicateurvs/update/" + row.id, { valeur: value })
+						.then((res) => {
+							setIsEdit(false);
+							onSuccess()
+						})
+				}}
+				suffix={<CloseOutlined onClick={()=>setIsEdit(false)} />}
+			/>
+		)
+	}
+	return (
+		<div onDoubleClick={() => setIsEdit(true)} >
+			{row.valeur}
+		</div>
+	)
+}
 
 export default () => {
 	const history = useHistory()
@@ -48,13 +78,20 @@ export default () => {
 			dataIndex: "valeur",
 			sorter: true,
 			hideInSearch: true,
+			render: (text, row, index, action) => (<ChangeValuerIndicateur onSuccess={action.reload} row={row} />)
 		},
 		{
-			title: "Comment",
+			title: "Observation",
 			dataIndex: "comment",
 			sorter: true,
 			hideInSearch: true,
 
+		},
+		{
+			title: "Cree par",
+			dataIndex: "createdbys_username",
+			sorter: true,
+			hideInSearch: true,
 		},
 		{
 			title: "option",
@@ -90,7 +127,7 @@ export default () => {
 		<Page withBack={true} title={"Historique des valeurs"} >
 			{data &&
 				<div style={{ height: 120 }}>
-					<IndicateursvChart valeurs={data} />
+					<IndicateurValeursChart valeurs={data.data} />
 				</div>}
 			<div>
 				<ProTable
@@ -109,8 +146,8 @@ export default () => {
 							p["filter"] = Object.values(filters)
 						}
 						return api.get("/smi_indicateurs/" + params.id, { params: p }).then((res) => {
-							console.log(res.data.data.data)
-							setData(res.data.data.data)
+							console.log(res.data.data)
+							setData(res.data.data)
 							return res.data.data
 						})
 					}}

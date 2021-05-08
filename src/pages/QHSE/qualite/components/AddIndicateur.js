@@ -127,7 +127,7 @@ export default ({ reload }) => {
 							},
 							{
 								name: "indicateur_sueil",
-								label: "Sens indicateur / Critère de performance ",
+								label: "Sens indicateur / Critère de performance",
 								type: "select",
 								selects: [
 									{ label: ">", value: ">" },

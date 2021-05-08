@@ -126,7 +126,7 @@ export default ({ title, reload, indicateur_id, frequence }) => {
 							},
 							{
 								name: "comment",
-								label: "Commentaire",
+								label: "Observation",
 								type: "textarea",
 							}
 						]}

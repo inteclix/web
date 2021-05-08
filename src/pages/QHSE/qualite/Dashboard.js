@@ -22,6 +22,8 @@ import {
 import IndicateursvChart from "./components/IndicateursvChart";
 import GaugeIndicateur from "./components/GaugeIndicateur";
 import Page from "components/Page";
+import ChartNatureActions from "./components/ChartNatureActions";
+import ChartNatureNC from "./components/ChartNatureNC";
 
 const { Panel } = Collapse;
 
@@ -50,29 +52,35 @@ const Indicateur = ({ indicateur }) => {
 	}
 
 	return (
-		<Page >
-			<GaugeIndicateur loading={loading} beforeLastValeur={beforeLastValeur} lastValeur={lastValeur} indicateur={indicateur} />
-		</Page>
+		<IndicateursvChart valeurs={valeurs} loading={loading} beforeLastValeur={beforeLastValeur} lastValeur={lastValeur} indicateur={indicateur} />
 	)
 }
 
 const Processu = ({ p }) => {
 	return (
-		<Row gutter={18}>
-
-			{
-				p?.indicateurs?.map((i) => (
-					<Indicateur indicateur={i} />
-				))
-			}
-		</Row>
+		<div >
+			<div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+				<ChartNatureActions p={p} />
+				<ChartNatureNC p={p} />
+			</div>
+			<Divider>Indicateurs</Divider>
+			<div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }} >
+				{
+					p?.indicateurs?.map((i) => (
+						<Indicateur indicateur={i} />
+					))
+				}
+			</div>
+		</div>
 	)
 }
 
 export default () => {
 	const { api, user } = useAppStore()
 	const [processus, setProcessus] = React.useState([])
-
+	const [processusId, setProcessusId] = React.useState(
+		Number.parseInt(localStorage.getItem("processu_id")) ? Number.parseInt(localStorage.getItem("processu_id")) - 1 : 0
+	)
 	React.useEffect(() => {
 		api.get("smi_processus")
 			.then((res) => {
@@ -82,7 +90,8 @@ export default () => {
 
 	return (
 		<Page title="Tableau de board QHSE" >
-			<Collapse defaultActiveKey={['0']}>
+			<Collapse defaultActiveKey={[processusId]}>
+
 				{
 					processus.map((p, index) => (
 						<Panel header={p.name} key={index} extra={<div><b>{p.indicateurs.length}</b> INDICATEURS</div>}>
@@ -92,16 +101,5 @@ export default () => {
 				}
 			</Collapse>
 		</Page>
-	)
-	return (
-		<div>
-			{
-				processus.map((p) => (
-					<>
-						<Processu p={p} />
-					</>
-				))
-			}
-		</div>
 	)
 }

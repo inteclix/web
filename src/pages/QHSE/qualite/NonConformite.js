@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import { Button, Tooltip, message, Popconfirm, Select, Tag, Progress } from "antd";
+import { Button, Tooltip, message, Popconfirm, Select, Tag, Progress, Form } from "antd";
 
 import ProTable from "@ant-design/pro-table";
 import {
@@ -19,7 +19,7 @@ import Page from "components/Page";
 import { useAppStore } from "stores";
 import { useHistory } from "react-router-dom";
 import { _prop } from "_consts";
-import { hasRole } from "utils";
+import { hasRole, listProcessus } from "utils";
 import AddObjetif from "./components/AddObjetif";
 import AddIndicateur from "./components/AddIndicateur";
 import AddIndicateurv from "./components/AddIndicateurv";
@@ -42,11 +42,15 @@ const months = [
 	"NOV",
 	"DEC"
 ]
+const Item = Form.Item
 
 export default () => {
 	const { api, user } = useAppStore()
 	const history = useHistory()
 	const actionRef = React.useRef()
+	const [processusId, setProcessusId] = React.useState(
+		Number.parseInt(localStorage.getItem("processu_id")) ? Number.parseInt(localStorage.getItem("processu_id")) : 1
+	)
 	const columns = [
 		{
 			title: "ID",
@@ -115,6 +119,15 @@ export default () => {
 				return row?.createdby?.username
 			}
 		},
+		{
+			title: "Accepter par",
+			dataIndex: "acceptedb",
+			sorter: true,
+			hideInSearch: true,
+			render: (text, row, index, action) => {
+				return row?.acceptedb?.username
+			}
+		},
 
 
 		{
@@ -174,12 +187,29 @@ export default () => {
 						params["filterBy"] = Object.keys(filters)[0]
 						params["filter"] = Object.values(filters)
 					}
+					params["processu_id"] = processusId
 					return api.get("/smi_conformites", { params }).then((res) => res.data)
 				}}
 				pagination={{
 					defaultCurrent: 1,
 					pageSize: 5
 				}}
+
+				toolBarRender={(action) => [
+					<div >
+						<Item label="Processus" >
+							<Select defaultValue={processusId} style={{ width: 220 }} onChange={(value) => {
+								setProcessusId(value);
+								localStorage.setItem("processu_id", value);
+								action.reload()
+							}}>
+								{listProcessus.map(p => (
+									<Select.Option value={p.id}>{p.value}</Select.Option>
+								))}
+							</Select>
+						</Item>
+					</div>
+				]}
 			/>
 		</Page>
 	)

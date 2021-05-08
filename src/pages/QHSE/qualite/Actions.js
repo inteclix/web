@@ -1,6 +1,16 @@
 import * as React from "react";
 import moment from "moment";
-import { Button, Tooltip, message, Popconfirm, Progress, Tag, Typography } from "antd";
+import {
+	Button,
+	Tooltip,
+	message,
+	Popconfirm,
+	Progress,
+	Tag,
+	Typography,
+	Select,
+	Form
+} from "antd";
 
 import ProTable from "@ant-design/pro-table";
 import {
@@ -19,7 +29,7 @@ import Page from "components/Page";
 import { useAppStore } from "stores";
 import { useHistory } from "react-router-dom";
 import { _prop } from "_consts";
-import { hasRole } from "utils";
+import { hasRole, listProcessus } from "utils";
 import AddObjetif from "./components/AddObjetif";
 import AddIndicateur from "./components/AddIndicateur";
 import AddIndicateurv from "./components/AddIndicateurv";
@@ -42,11 +52,15 @@ const months = [
 	"NOV",
 	"DEC"
 ]
-
+const Item = Form.Item
 export default () => {
 	const { api, user } = useAppStore()
 	const history = useHistory()
+	const [processusId, setProcessusId] = React.useState(
+		Number.parseInt(localStorage.getItem("processu_id")) ? Number.parseInt(localStorage.getItem("processu_id")) : 1
+	)
 	const actionRef = React.useRef()
+	window.actio = actionRef
 	const columns = [
 		{
 			title: "ID",
@@ -62,13 +76,8 @@ export default () => {
 			sorter: true,
 		},
 		{
-			title: "Processus",
-			dataIndex: "processus_slog",
-			hideInSearch: true,
-			sorter: true,
-		},
-		{
 			title: "Type",
+			dataIndex: "actions_type",
 			hideInSearch: true,
 			render: (text, row, index, action) => {
 				return row.conformites_name ?
@@ -77,7 +86,11 @@ export default () => {
 					</Tooltip>
 					:
 					<Tag color="green">AA</Tag>
-			}
+			},
+			filters: [
+				{ text: 'AC', value: 'AC' },
+				{ text: 'AA', value: 'AA' },
+			]
 		},
 		{
 			title: "Date echeance",
@@ -101,7 +114,11 @@ export default () => {
 			hideInSearch: true,
 			render: (text, row, index, action) => {
 				return <Progress steps={5} percent={row?.actions_avancement} />
-			}
+			},
+			filters: [
+				{ text: 'En cours', value: 'en_cours' },
+				{ text: 'Réalisé', value: 'realise' },
+			]
 		},
 		{
 			title: "Cree par",
@@ -163,11 +180,13 @@ export default () => {
 			]
 		}
 	];
+
+
 	return (
 		<Page title="AC & AA">
 			<div style={{ marginBottom: 15 }}>
 				{
-					hasRole(user, "AJOUTER_INDICATEUR") &&
+					hasRole(user, "SMI_AJOUTER_ACTION") &&
 					<AddAction reload={() => actionRef.current.reload()} />
 				}
 			</div>
@@ -182,16 +201,35 @@ export default () => {
 						params["sortBy"] = Object.keys(sort)[0]
 						params["sort"] = Object.values(sort)[0]
 					}
+					console.log(filters)
 					if (filters) {
-						params["filterBy"] = Object.keys(filters)[0]
-						params["filter"] = Object.values(filters)
+					//	params["filterBy"] = Object.keys(filters)[0]
+					//	params["filter"] = Object.values(filters)
 					}
+					params["filters"] = JSON.stringify(filters)
+					params["processu_id"] = processusId
 					return api.get("/smi_actions", { params }).then((res) => res.data)
 				}}
 				pagination={{
 					defaultCurrent: 1,
 					pageSize: 5
 				}}
+
+				toolBarRender={(action) => [
+					<div >
+						<Item label="Processus" >
+							<Select defaultValue={processusId} style={{ width: 220 }} onChange={(value) => {
+								setProcessusId(value);
+								localStorage.setItem("processu_id", value);
+								action.reload()
+							}}>
+								{listProcessus.map(p => (
+									<Select.Option value={p.id}>{p.value}</Select.Option>
+								))}
+							</Select>
+						</Item>
+					</div>
+				]}
 			/>
 		</Page>
 	)

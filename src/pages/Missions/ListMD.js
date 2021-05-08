@@ -132,12 +132,12 @@ export default function () {
 				</Tooltip>,
 				<>
 					{
-						hasRole(user, "MODIFIER_GPS_MISSION_VL") &&
+						hasRole(user, "MODIFIER_GPS_MISSION_MD") &&
 						<CalcGPS />
 					}
 				</>,
 				<>
-					{hasRole(user, "VALIDER_MISSION_VL") &&
+					{hasRole(user, "VALIDER_MISSION_MD") &&
 						<Popconfirm
 							title="Êtes-vous sûr de vouloir valider?"
 							onConfirm={() => {
@@ -160,7 +160,7 @@ export default function () {
 					}
 				</>,
 				<>
-					{hasRole(user, "MODIFIER_MISSION_VL") &&
+					{hasRole(user, "MODIFIER_MISSION_MD") &&
 						<Tooltip title="Modifier">
 							<Button
 								onClick={() => {
@@ -172,7 +172,7 @@ export default function () {
 				</>,
 				<>
 					{
-						hasRole(user, "SUPPRIMER_MISSION_VL") &&
+						hasRole(user, "SUPPRIMER_MISSION_MD") &&
 						<Popconfirm
 							title="Êtes-vous sûr de vouloir supprimer?"
 							onConfirm={() => {
@@ -195,7 +195,7 @@ export default function () {
 		}
 	];
 	return (
-		<Page title={"Missions VL"} selectedSiderKey="list-cars">
+		<Page title={"Missions MD"} selectedSiderKey="list-cars">
 			<ProTable
 				actionRef={actionRef}
 				size="small"
@@ -213,7 +213,7 @@ export default function () {
 					}
 					params["date1"] = date1 ? date1.format("yy-M-D") : moment().format("yy-M-D")
 					params["date2"] = date2 ? date2.format("yy-M-D") : moment().format("yy-M-D")
-					return api.get("/missionvls?type=VL", { params }).then((res) => res.data)
+					return api.get("/missionvls?type=MD", { params }).then((res) => res.data)
 				}}
 				pagination={{
 					defaultCurrent: 1,
@@ -247,7 +247,7 @@ export default function () {
 								const d1 = date1 ? date1.format("yy-M-D") : moment().format("yy-M-D")
 								const d2 = date2 ? date2.format("yy-M-D") : moment().format("yy-M-D")
 								setLoadingDownload(true)
-								api.get(`/missionvls?format=excel&date1=${d1}&date2=${d2}`,
+								api.get(`/missionvls?format=excel&date1=${d1}&date2=${d2}&type=MD`,
 									{
 										responseType: 'blob',
 										headers: {

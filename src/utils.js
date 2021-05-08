@@ -79,12 +79,52 @@ export const indicateurCastTypeDate = (type) => {
 
 export const getIndicateurEcart = (row) => {
 	if (row.valeurs?.length !== 0) {
+		const res = row?.valeurs[row.valeurs?.length - 1].valeur - row?.seuil
 		if (row.indicateur_sueil == ">") {
-			return row?.valeurs[row.valeurs?.length - 1].valeur - row?.seuil
+			return res
 		} else {
-			return row?.seuil - row?.valeurs[row.valeurs?.length - 1].valeur
+			return res * -1
 		}
 	} else {
 		return null
 	}
 }
+
+export const listProcessus = [
+	{
+		id: 1,
+		value: "DIRECTION GENERALE"
+	},
+	{
+		id: 2,
+		value: "MQHSE"
+	},
+	{
+		id: 3,
+		value: "EXPLOITATION"
+	},
+	{
+		id: 4,
+		value: "MAINTENANCE"
+	},
+	{
+		id: 5,
+		value: "COMMERCIAL"
+	},
+	{
+		id: 6,
+		value: "ACHATS"
+	},
+	{
+		id: 7,
+		value: "RH"
+	},
+	{
+		id: 8,
+		value: "FINANCES ET COMPTABILITE"
+	},
+	{
+		id: 9,
+		value: "SYSTEME D'INFORMATION"
+	}
+]

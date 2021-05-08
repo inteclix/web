@@ -15,17 +15,17 @@ export default function () {
 	window.api = api
 	const history = useHistory()
 	const add = (dataForm) => {
-		dataForm["type"] = "VL"
+		dataForm["type"] = "MD"
 		dataForm["date_bon_mission"] = dataForm["date_bon_mission"] ? dataForm["date_bon_mission"].format("yy-M-D") : null
 		dataForm["date_depart_mission"] = dataForm["date_depart_mission"] ? dataForm["date_depart_mission"].format("yy-M-D") : null
 		dataForm["date_arrivee_mission"] = dataForm["date_arrivee_mission"] ? dataForm["date_arrivee_mission"].format("yy-M-D") : null
 		api.post("/missionvls", dataForm).then((res) => {
 			message.info("Bien ajouter")
-			history.push("/missions_vl/" + res?.data?.id)
+			history.push("/missions_md/" + res?.data?.id)
 		})
 	}
 	return (
-		<Page title="Nouvelle mission VL">
+		<Page title="Nouvelle mission MD">
 			<FormBuilder
 				formItems={[
 					{
@@ -41,10 +41,20 @@ export default function () {
 					},
 					{
 						name: "car_id",
-						label: "Véhicule",
+						label: "Tracteur",
 						type: "search",
 						url: "cars/search",
-						//	query_string: "groupe=leger",
+						query_string: "groupe=LIVRAISON%20MARCHANDISE",
+						rules: [{ required: true, message: _messages.required }],
+						defaultOptionName: "car",
+						mapOptionToString: c => c?.matricule + " | " + c?.marque
+					},
+					{
+						name: "remourque_id",
+						label: "Remorque",
+						type: "search",
+						url: "cars/search",
+						query_string: "genre=REMORQUE",
 						rules: [{ required: true, message: _messages.required }],
 						defaultOptionName: "car",
 						mapOptionToString: c => c?.matricule + " | " + c?.marque

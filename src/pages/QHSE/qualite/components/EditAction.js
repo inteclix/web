@@ -98,21 +98,11 @@ export default ({ title, reload, indicateur_id, frequence, row }) => {
 								label: "Observation",
 								type: "textarea",
 							},
-							{
-								name: "state",
-								label: "Etat de action",
-								type: "select",
-								selects: [
-									{
-										label: "Anullée", value: "Anullée"
-									}
-								]
-							},
 						]}
 						initialValues={{
-							date_cloture: row?.date_cloture ? moment(row?.date_cloture) : null,
-							avancement: row?.avancement,
-							observation: row?.observation
+							date_cloture: row?.actions_date_cloture ? moment(row?.date_cloture) : null,
+							avancement: row?.actions_avancement,
+							observation: row?.actions_observation
 						}}
 						onFinish={add}
 					/>

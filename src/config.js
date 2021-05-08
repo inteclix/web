@@ -46,6 +46,7 @@ import GroupCar from 'pages/Cars/GroupCar';
 
 
 import AddVLMission from "pages/Missions/AddVL"
+import AddMDMission from "pages/Missions/AddMD"
 import ListRoles from 'pages/Users/ListRoles';
 import AddRole from 'pages/Users/AddRole';
 import UsersRoles from "pages/Users/UsersRoles"
@@ -62,8 +63,10 @@ import ListVL from 'pages/Missions/ListVL';
 import ListMiseDispositionVL from 'pages/Clients/ListMiseDispositionVL';
 import ShowVL from "pages/Missions/ShowVL"
 import EditVL from 'pages/Missions/EditVL';
+import EditMD from 'pages/Missions/EditMD';
 import SMIQualite from 'pages/QHSE/SMIQualite';
 import Axes from 'pages/QHSE/qualite/Axes';
+import ListMD from 'pages/Missions/ListMD';
 
 export default {
   appName: "GPark v1.0.0",
@@ -403,7 +406,7 @@ export default {
     {
       name: 'missions',
       label: "Missions",
-      role: "LISTE_MISSIONS_VL",
+      role: "LISTE_MISSIONS",
       icon: <GiPathDistance style={{ marginRight: 10 }} />,
       routes: [
         {
@@ -421,12 +424,35 @@ export default {
           component: EditVL,
           hideInSide: true
         },
+				{
+          path: '/missions_md/add',
+          name: 'add-mission-md',
+          label: 'Ajouter mission MD',
+          role: "AJOUTER_MISSION_MD",
+          component: AddMDMission,
+        },
+				{
+          path: '/missions_md/edit/:id',
+          name: 'edit-missions-md',
+          label: "Modifier mission MD",
+          role: "MODIFIER_MISSION_MD",
+          component: EditMD,
+          hideInSide: true
+        },
         {
           path: '/missions_vl',
           name: 'list-missions-vl',
           role: "LISTE_MISSIONS_VL",
           label: 'List missions VL',
           component: ListVL,
+          exact: true
+        },
+				{
+          path: '/missions_md',
+          name: 'list-missions-md',
+          role: "LISTE_MISSIONS_MD",
+          label: 'List missions MD',
+          component: ListMD,
           exact: true
         },
         {

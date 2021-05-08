@@ -151,14 +151,20 @@ export default class PrintMission extends React.Component {
 							</u>
 							<ul>
 								<li>
+									<b>Code GPS:</b> {mission.car.code_gps}
+								</li>
+								<li>
 									<b>Marque:</b> {mission.car.marque}
 								</li>
 								<li>
 									<b>Matricule:</b> {mission.car.matricule}
 								</li>
-								<li>
-									<b>Code GPS:</b> {mission.car.code_gps}
-								</li>
+								{
+									mission?.remourque?.matricule &&
+									<li>
+										<b>Remorque:</b> {mission.remourque.matricule}
+									</li>
+								}
 
 							</ul>
 						</div>

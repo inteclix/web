@@ -32,12 +32,12 @@ export default ({ reload, addButton, indicateurv_id }) => {
 
 	const add = (dataForm) => {
 		dataForm["indicateurv_id"] = indicateurv_id
+		dataForm["domaine"] = JSON.stringify(dataForm["domaine"])
 		dataForm["date_prevu"] = dataForm["date_prevu"] ? dataForm["date_prevu"].format("yy-M-D") : moment().format("yy-M-D")
 		dataForm["date"] = dataForm["date"] ? dataForm["date"].format("yy-M-D") : moment().format("yy-M-D")
 		api.post("/smi_conformites", dataForm).then((res) => { message.info("Bien ajouter"); onClose(); reload() })
 		//console.log(dataForm)
 	}
-	window.addButton = addButton
 	return (
 		<>
 			<Tooltip title="Ajouter non-conformité">
